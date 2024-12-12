@@ -1,0 +1,117 @@
+﻿@page "/BackEndPages/ApplyForm/{jobTitle}"
+@using StaffingSolution.Models
+@inject StaffingSolution.Controllers.JobController JobController
+
+<h1>Ansök till jobbet: @job.Title</h1>
+
+<div class="job-details">
+    <img src="@job.ImageUrl" alt="@job.Title" />
+    <div class="job-text">
+        <p><strong>Plats:</strong> @job.Location</p>
+        <p><strong>Beskrivning:</strong> @job.Description</p>
+    </div>
+</div>
+
+<h3>Vad jobbet går ut på:</h3>
+<p class="centered-text">@job.Responsibilities</p>
+
+<h3>Vad som krävs:</h3>
+<p class="centered-text">@job.Requirements</p>
+
+
+<form action="/apply" method="post">
+    <input type="hidden" name="jobTitle" value="@job.Title" />
+
+    <label>Har du studerat eller annat arbete på minst 50%?</label>
+    <div class="radio-group">
+        <div>
+            <input type="radio" id="studyingYes" name="isStudying" value="true" />
+            <label for="studyingYes">Ja</label>
+        </div>
+        <div>
+            <input type="radio" id="studyingNo" name="isStudying" value="false" />
+            <label for="studyingNo">Nej</label>
+        </div>
+    </div>
+
+
+    <label>Kan du arbeta heltid under perioden 29/11 till 13/12?</label>
+    <div class="radio-group">
+        <div>
+            <input type="radio" id="workYes" name="canWorkFulltime" value="true" />
+            <label for="workYes">Ja</label>
+        </div>
+        <div>
+            <input type="radio" id="workNo" name="canWorkFulltime" value="false" />
+            <label for="workNo">Nej</label>
+        </div>
+    </div>
+
+
+    <label>Har du B-körkort?</label>
+    <div class="radio-group">
+        <div>
+            <input type="radio" id="licenseYes" name="hasDrivingLicense" value="true" />
+            <label for="licenseYes">Ja</label>
+        </div>
+        <div>
+            <input type="radio" id="licenseNo" name="hasDrivingLicense" value="false" />
+            <label for="licenseNo">Nej</label>
+        </div>
+    </div>
+
+
+    <label>Hur många års erfarenhet har du?</label>
+    <select name="experienceYears">
+        <option value="0">Mindre än 1 år</option>
+        <option value="1">1-3 år</option>
+        <option value="2">3-5 år</option>
+        <option value="3">5 år eller mer</option>
+    </select>
+
+
+    <label>Betygsätt dina svenska kunskaper:</label>
+    <input type="range" name="swedishSkills" min="0" max="10" />
+
+
+    <label for="firstName">Förnamn</label>
+    <input type="text" id="firstName" name="firstName" required />
+
+    <label for="lastName">Efternamn</label>
+    <input type="text" id="lastName" name="lastName" required />
+
+    <label for="email">E-post</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="phone">Telefonnummer</label>
+    <input type="tel" id="phone" name="phone" required />
+
+    <label for="coverLetter">Personligt brev</label>
+    <textarea id="coverLetter" name="coverLetter" required></textarea>
+
+    <button type="submit">Skicka Ansökan</button>
+</form>
+
+@code {
+    [Parameter]
+    public string jobTitle { get; set; }
+    private Job job;
+
+    protected override void OnInitialized()
+    {
+        job = JobController.GetJobs().FirstOrDefault(j => j.Title == jobTitle);
+
+        if (job == null)
+        {
+
+            job = new Job
+                {
+                    Title = "Okänt jobb",
+                    Location = "Ingen plats angiven",
+                    Description = "Ingen beskrivning tillgänglig",
+                    Responsibilities = "Ingen information tillgänglig",
+                    Requirements = "Ingen information tillgängliga"
+                };
+        }
+    }
+}

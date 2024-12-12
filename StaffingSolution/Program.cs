@@ -1,4 +1,7 @@
 using StaffingSolution.Components;
+using StaffingSolution.Models;
+using System;
+using StaffingSolution.Controllers;
 
 namespace StaffingSolution
 {
@@ -11,6 +14,8 @@ namespace StaffingSolution
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddScoped<JobController>();
 
             var app = builder.Build();
 

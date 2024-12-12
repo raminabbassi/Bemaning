@@ -1,36 +1,107 @@
-﻿@page "/Error"
-@using System.Diagnostics
+﻿@page "/career"
+@using StaffingSolution.Models
 
-<PageTitle>Error</PageTitle>
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="career-page-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Din karriär på Extendly</h1>
+            <p>Bygg en framtid tillsammans med oss. Tillsammans skapar vi framgångsrika team och möjligheter för personlig och professionell utveckling.</p>
+            <a href="/jobsearch" class="cta-button">Utforska lediga jobb</a>
+        </div>
+    </section>
 
-@if (ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@RequestId</code>
-    </p>
-}
+    <!-- Why Work With Us Section -->
+    <section class="why-work-with-us">
+        <h2>Varför arbeta med oss?</h2>
+        <p>Hos Extendly är vi engagerade i att hjälpa våra medarbetare att växa och utvecklas. Vi erbjuder en arbetsmiljö där innovation, samarbete och respekt är grundpelarna för framgång.</p>
+        <div class="why-cards">
+            <div class="card">
+                <h3>Personlig utveckling</h3>
+                <p>Vi stödjer våra anställda i deras professionella resa genom utbildning och mentorskap.</p>
+            </div>
+            <div class="card">
+                <h3>Flextid & Distansarbete</h3>
+                <p>Vi förstår värdet av balans mellan arbete och privatliv.</p>
+            </div>
+            <div class="card">
+                <h3>Innovation</h3>
+                <p>Vi är en innovationsdriven organisation där varje idé räknas.</p>
+            </div>
+        </div>
+    </section>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
 
-@code{
-    [CascadingParameter]
-    private HttpContext? HttpContext { get; set; }
+    <!-- Benefits Section -->
+    <section class="company-benefits">
+        <h2>Förmåner</h2>
+        <p>De förmåner du får när du är med i Extendly Familjen</p>
+        <div class="benefit-list">
+            <div class="benefit-item">
+                <h3>Hälsovård</h3>
+                <p>Vi erbjuder ett omfattande hälsovårdsprogram för att ta hand om ditt välmående.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Friskvårdsbidrag</h3>
+                <p>Bidrag för att uppmuntra en hälsosam livsstil.</p>
+            </div>
+            <div class="benefit-item">
+                <h3>Pension</h3>
+                <p>Vi erbjuder förmånliga pensionsplaner för att säkerställa din framtid.</p>
+            </div>
+        </div>
+    </section>
 
-    private string? RequestId { get; set; }
-    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-    protected override void OnInitialized() =>
-        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+    <section id="open-positions" class="open-job-positions">
+        <h2>Lediga Tjänster</h2>
+        <p>Se våra tre mest aktuella jobb och ta nästa steg i din karriär med oss.</p>
+        <div class="job-listings">
+            <!-- Job 1 -->
+            <div class="job-card">
+                <img src="@job1.ImageUrl" alt="@job1.Title" />
+                <h3>@job1.Title</h3>
+                <p>@job1.Location</p>
+                <a href="/BackEndPages/ApplyForm/@Uri.EscapeDataString(job1.Title)" class="apply-button">Ansök nu</a>
+            </div>
+            <!-- Job 2 -->
+            <div class="job-card">
+                <img src="@job2.ImageUrl" alt="@job2.Title" />
+                <h3>@job2.Title</h3>
+                <p>@job2.Location</p>
+                <a href="/BackEndPages/ApplyForm/@Uri.EscapeDataString(job2.Title)" class="apply-button">Ansök nu</a>
+            </div>
+            <!-- Job 3 -->
+            <div class="job-card">
+                <img src="@job3.ImageUrl" alt="@job3.Title" />
+                <h3>@job3.Title</h3>
+                <p>@job3.Location</p>
+                <a href="/BackEndPages/ApplyForm/@Uri.EscapeDataString(job3.Title)" class="apply-button">Ansök nu</a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Apply Section -->
+    <section class="application-section">
+        <h2>Leta Jobb Nu</h2>
+        <p>tryck nedan för att se våra lediga tjänster och bli en del av Extendly.</p>
+        <a href="/JobSearch" class="apply-now-button">Leta Jobb Nu</a>
+    </section>
+</div>
+
+@code {
+    private Job job1;
+    private Job job2;
+    private Job job3;
+    private List<Job> jobs = new List<Job>();
+    protected override void OnInitialized()
+    {
+        jobs = JobController.GetJobs();
+        job1 = jobs.FirstOrDefault(j => j.Title == "Webbutvecklare");
+        job2 = jobs.FirstOrDefault(j => j.Title == "Projektledare");
+        job3 = jobs.FirstOrDefault(j => j.Title == "Marknadsförare");
+    }
+
 }

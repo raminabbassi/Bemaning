@@ -1,0 +1,28 @@
+﻿@page "/jobsearch"
+@inject StaffingSolution.Controllers.JobController JobController
+@using System.Collections.Generic
+@using StaffingSolution.Models
+
+<h1>Lediga Jobb</h1>
+
+<div class="job-list">
+    @foreach (var job in jobs)
+    {
+        <div class="job-card">
+            <img src="@job.ImageUrl" alt="@job.Title" />
+            <h4>@job.Title</h4>
+            <p>@job.Location</p>
+            <p>@job.Description</p>
+            <a class="button" href="/BackEndPages/ApplyForm/@Uri.EscapeDataString(job.Title)">Läs mer och Ansök</a>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Job> jobs = new List<Job>();
+
+    protected override void OnInitialized()
+    {
+        jobs = JobController.GetJobs();
+    }
+}

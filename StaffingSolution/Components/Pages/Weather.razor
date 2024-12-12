@@ -1,64 +1,33 @@
-﻿@page "/weather"
-@attribute [StreamRendering]
+﻿@page "/contact"
+<main>
+    <h1>Kontakt</h1>
 
-<PageTitle>Weather</PageTitle>
+    <!-- Kontaktcontainer som matchar den nya CSS-stilen -->
+    <div class="contact-container">
+        <div class="contact-info">
+            <p>Har du frågor? Kontakta oss på:</p>
+            <p><i class="fa fa-envelope"></i> Email: <a href="mailto:info@Extendly.se">info@Extendly.se</a></p>
+            <p><i class="fa fa-phone"></i> Telefon: 010-123456</p>
+        </div>
 
-<h1>Weather</h1>
+        <!-- Kontaktformulär -->
+        <form>
+            <h3>Skicka oss ett meddelande</h3>
 
-<p>This component demonstrates showing data.</p>
+            <!-- Namn -->
+            <label for="name">Namn:</label>
+            <input type="text" id="name" name="name" required />
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+            <!-- E-post -->
+            <label for="email">E-post:</label>
+            <input type="email" id="email" name="email" required />
 
-@code {
-    private WeatherForecast[]? forecasts;
+            <!-- Meddelande -->
+            <label for="message">Meddelande:</label>
+            <textarea id="message" name="message" required></textarea>
 
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
-    }
-
-    private class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
-}
+            <!-- Skicka knapp -->
+            <button type="submit">Skicka</button>
+        </form>
+    </div>
+</main>
