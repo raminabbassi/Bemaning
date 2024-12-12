@@ -1,0 +1,77 @@
+﻿@inherits LayoutComponentBase
+<div class="main-layout">
+    <header>
+        <a href="/" class="logo-link">
+            <img src="images/logo.png" alt="Extendly Logo" class="logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="/">Hem</a></li>
+                <li><a href="/jobsearch">Lediga Tjänster</a></li>
+                <li><a href="/career">Karriär</a></li>
+                <li><a href="/about">Om Oss</a></li>
+                <li><a href="/contact">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+
+
+
+
+<main>
+    @Body
+</main>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Kontaktinformation -->
+            <div class="footer-col">
+                <h4>Kontakta Oss</h4>
+                <ul>
+                    <li>Email: <a href="mailto:info@extendly.se">info@extendly.se</a></li>
+                    <li>Telefon: <a href="tel:+46123456789">010-123 45 67</a></li>
+                </ul>
+            </div>
+            <!-- Länkar -->
+            <div class="footer-col">
+                <h4>Länkar</h4>
+                <ul>
+                    <li><a href="/jobsearch">Jobbannonser</a></li>
+                    <li><a href="/career">Karriär</a></li>
+                    <li><a href="/about">Om Oss</a></li>
+                    <li><a href="/contact">Kontakt</a></li>
+                </ul>
+            </div>
+            <!-- Sociala Medier -->
+            <div class="footer-col">
+                <h4>Sociala Medier</h4>
+                <p>Följ oss på våra sociala medier!</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <p class="footer-bottom-text">&copy; 2024 Extendly</p>
+    </div>
+</footer>
+
+@code {
+    private bool isLoggedIn;
+    private string loggedInUser;
+
+    protected override void OnInitialized()
+    {
+        isLoggedIn = AuthService.IsLoggedIn();
+        loggedInUser = AuthService.GetLoggedInUser();
+        AuthService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AuthService.OnChange -= StateHasChanged;
+    }
+}
