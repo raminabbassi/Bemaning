@@ -58,20 +58,3 @@
         <p class="footer-bottom-text">&copy; 2024 Extendly</p>
     </div>
 </footer>
-
-@code {
-    private bool isLoggedIn;
-    private string loggedInUser;
-
-    protected override void OnInitialized()
-    {
-        isLoggedIn = AuthService.IsLoggedIn();
-        loggedInUser = AuthService.GetLoggedInUser();
-        AuthService.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        AuthService.OnChange -= StateHasChanged;
-    }
-}

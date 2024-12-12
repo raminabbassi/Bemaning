@@ -1,0 +1,12 @@
+﻿
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+    background: #e66296; /* Basfärg för bakgrund */
+    background: linear-gradient(135deg, green, blue 100%); /* Gradient bakgrund */
+    min-height: 100vh; /* Fyll hela höjden av sidan */
+    display: flex;
+    flex-direction: column;
+}

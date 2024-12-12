@@ -1,0 +1,351 @@
+﻿/* General Page Styling */
+.career-page-container {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    background: url('/images/hero.jpg') no-repeat center center/cover;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    background-attachment: fixed;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero-section p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.cta-button {
+    background-color: #002d50;
+    color: white;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .cta-button:hover {
+        background-color: #e0a61c;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Why Work With Us Section */
+.why-work-with-us {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .why-work-with-us h2 {
+        font-size: 2.5rem;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .why-work-with-us p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+    }
+
+/* Flexbox Layout for the Cards */
+.why-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px; /* Space between the paragraph and cards */
+}
+
+.card {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    width: 30%; /* Adjust width to make it smaller, e.g. 30% for 3 items per row */
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    height: 300px; /* Make the card longer than wide */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* To position text correctly */
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        font-size: 1.1rem;
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .why-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 80%; /* Adjust the card width on mobile for a better layout */
+        margin-bottom: 20px;
+    }
+}
+
+/* Benefits Section */
+.company-benefits {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .company-benefits h2 {
+        font-size: 2.5rem;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .company-benefits p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+.benefit-list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.benefit-item {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    width: 30%; /* Adjust width to make it smaller, e.g. 30% for 3 items per row */
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    height: 300px; /* Make the card longer than wide */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* To position text correctly */
+}
+
+    .benefit-item:hover {
+        transform: scale(1.05);
+    }
+
+    .benefit-item h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .benefit-item p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+/* Open Positions Section */
+.open-job-positions {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .open-job-positions h2 {
+        font-size: 2.5rem;
+        color: black;
+        margin-bottom: 20px;
+    }
+
+    .open-job-positions p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+.job-listings {
+    display: flex;
+    justify-content: center; /* Centrerar korten horisontellt */
+    gap: 20px;
+    flex-wrap: wrap; /* Tillåter korten att bryta sig på olika rader om det behövs */
+}
+
+/* Job Card */
+.job-card {
+    flex: 1 1 calc(25% - 20px); /* 4 kolumner per rad, justera för mindre/bredare kort */
+    box-sizing: border-box;
+    border: 1px solid #ddd; /* Lätt ram runt korten */
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    min-width: 220px; /* Justera till lämplig minsta bredd */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Gör så att innehållet fördelas jämnt */
+}
+
+    .job-card:hover {
+        transform: scale(1.05); /* Gör kortet lite större vid hover */
+    }
+
+    .job-card img {
+        width: 100%; /* Gör bilden så att den täcker hela kortets bredd */
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 10px; /* Mellanrum mellan bild och text */
+    }
+
+    /* Job Card Title and Description */
+    .job-card h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .job-card p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: white
+    }
+
+/* Apply Button */
+.apply-button {
+    background-color: #002d50;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-top: auto; /* Knappen hålls längst ner på kortet */
+}
+
+    .apply-button:hover {
+        background-color: #e0a61c;
+    }
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .job-listings {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .job-card {
+        width: 80%; /* Gör korten bredare på små skärmar */
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Apply Section */
+.application-section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+    .application-section h2 {
+        font-size: 2.5rem;
+        color: lawngreen;
+        margin-bottom: 20px;
+    }
+
+    .application-section p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+    }
+
+.apply-now-button {
+    background-color: lawngreen;
+    color: black;
+    padding: 14px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .apply-now-button:hover {
+        background-color: #002d50;
+    }
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+    footer a {
+        color: white;
+        text-decoration: none;
+        margin: 10px;
+    }
+
+        footer a:hover {
+            color: #f8c128;
+        }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .why-cards, .benefit-list, .job-listings {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card, .benefit-item, .job-card-item {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-section p {
+        font-size: 1.2rem;
+    }
+}

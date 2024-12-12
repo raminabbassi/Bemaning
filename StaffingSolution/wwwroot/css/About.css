@@ -1,0 +1,70 @@
+﻿
+.about-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.hero-about {
+    background: linear-gradient(90deg, #003d80, #0066cc);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+    .hero-about h1 {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .hero-about p {
+        font-size: 1.5rem;
+        line-height: 1.8;
+    }
+
+.about-intro {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 40px 0;
+    line-height: 1.8;
+}
+
+.mission-values {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.mission, .values {
+    flex: 1;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+    .mission h2, .values h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #003d80;
+    }
+
+    .values ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .values ul li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+            .values ul li strong {
+                color: #0066cc;
+            }
+
+

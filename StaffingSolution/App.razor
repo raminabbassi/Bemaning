@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using StaffingSolution.Shared
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+    </Found>
+    <NotFound>
+        <h1>404 - Sidan hittades inte</h1>
+    </NotFound>
+</Router>

@@ -1,0 +1,86 @@
+﻿
+
+h1, h3 {
+    text-align: center;
+    text-transform: uppercase; /* Gör rubriker till versaler */
+    letter-spacing: 2px; /* Ökar mellanrum mellan bokstäver */
+    margin-bottom: 20px;
+}
+
+.job-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px auto; /* Extra mellanrum mellan sektionerna */
+    max-width: 900px; /* Begränsar bredden */
+    padding: 20px;
+    background-color: rgba(0, 45, 80, 0.8); /* Semi-transparent bakgrund */
+    border-radius: 10px; /* Rundade hörn */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Skugga för en lyft effekt */
+}
+
+    .job-details img {
+        max-width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Skugga för bilden */
+    }
+
+.job-text {
+    text-align: left;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.centered-text {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 800px;
+    font-size: 18px; /* Gör texten mer framträdande */
+    line-height: 1.8;
+    background-color: rgba(0, 45, 80, 0.8); /* Samma bakgrund som ovan */
+    padding: 15px;
+    border-radius: 10px; /* Rundade hörn */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Skugga */
+}
+
+/* Anpassad knappdesign */
+button[type="submit"] {
+    background: linear-gradient(to right, #0066cc, #003d80);
+    color: white;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px; /* Rundad knapp */
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+    button[type="submit"]:hover {
+        background: linear-gradient(to right, #005b96, #002d50);
+        transform: scale(1.05); /* Lätt förstoring vid hover */
+    }
+input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.radio-group {
+    display: flex; /* Flexbox-layout för att placera dem bredvid varandra */
+    gap: 20px; /* Utrymme mellan knapparna */
+    align-items: center; /* Vertikal centrering */
+    margin: 10px 20px; /* Marginal ovan och under gruppen */
+}
+
+    .radio-group label {
+        font-size: 16px; /* Anpassad textstorlek */
+        color: white; /* Textfärg */
+        margin: 0; /* Ingen extra marginal runt text */
+    }
+
+    .radio-group input[type="radio"] {
+        margin-right: 8px; /* Litet mellanrum mellan knapp och etikett */
+    }
