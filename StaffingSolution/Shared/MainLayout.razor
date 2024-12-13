@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using StaffingSolution.Services
+@inherits LayoutComponentBase
+@inject AuthService AuthService
+
 <div class="main-layout">
     <header>
         <a href="/" class="logo-link">
@@ -11,6 +14,16 @@
                 <li><a href="/career">Karriär</a></li>
                 <li><a href="/about">Om Oss</a></li>
                 <li><a href="/contact">Kontakt</a></li>
+                @if (isLoggedIn)
+                {
+                    <li><span>Inloggad som: @loggedInUser</span></li>
+                    <li><a class="button" href="/logout">Logga ut</a></li>
+                }
+                else
+                {
+                    <li><a class="button" href="/BackEndPages/Login">Logga in</a></li>
+                    <li><a class="button" href="/BackEndPages/Register">Registrera</a></li>
+                }
             </ul>
         </nav>
     </header>
@@ -55,3 +68,20 @@
         <p class="footer-bottom-text">&copy; 2024 Extendly</p>
     </div>
 </footer>
+
+@code {
+    private bool isLoggedIn;
+    private string loggedInUser;
+
+    protected override void OnInitialized()
+    {
+        isLoggedIn = AuthService.IsLoggedIn();
+        loggedInUser = AuthService.GetLoggedInUser();
+        AuthService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AuthService.OnChange -= StateHasChanged;
+    }
+}

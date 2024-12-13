@@ -1,0 +1,48 @@
+﻿@page "/BackEndPages/joboverview"
+@using StaffingSolution.Services
+@using StaffingSolution.Interfaces
+@using StaffingSolution.Models
+@inject IJobApplicationService JobApplicationService
+@inject IAuthService AuthService
+
+<h3>Jobb du har sökt</h3>
+
+@if (jobs == null || jobs.Count == 0)
+{
+    <p>Du har inte sökt några jobb ännu.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Företag</th>
+                <th>Status</th>
+                <th>Ansökningsdatum</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var job in jobs)
+            {
+                <tr>
+                    <td>@job.Title</td>
+                    <td>@job.Company</td>
+                    <td>@job.Status</td>
+                    <td>@job.AppliedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<JobApplication> jobs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var currentUserEmail = AuthService.GetCurrentUserEmail();
+        jobs = await JobApplicationService.GetJobsAppliedByUser(currentUserEmail);
+    }
+}
+
