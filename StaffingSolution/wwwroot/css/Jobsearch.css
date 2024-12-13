@@ -1,5 +1,4 @@
-﻿/* Job list layout */
-.job-list {
+﻿.job-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

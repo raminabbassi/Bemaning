@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<JobController>(); // Lägg till JobController som tjänst
+builder.Services.AddScoped<JobController>(); 
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

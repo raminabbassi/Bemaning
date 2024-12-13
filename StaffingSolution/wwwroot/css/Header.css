@@ -1,24 +1,24 @@
 ﻿header {
-    background-color: #333; /* Mörk bakgrund på navbaren */
+    background-color: #333; 
     padding: 20px 10px;
     display: flex;
-    justify-content: center; /* Centrerar hela navbarens innehåll */
+    justify-content: center; 
     align-items: center;
-    position: relative; /* Behövs för att placera logotypen */
+    position: relative;
     z-index: 1;
 }
 
     header .logo {
-        max-width: 50px; /* Logotypens storlek */
+        max-width: 50px;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
         cursor: pointer;
         position: absolute;
-        left: 550px; /* Placerar logotypen till vänster */
+        left: 550px; 
         top: 6px;
     }
         header .logo:hover {
-            transform: scale(1.2); /* Förstorar logotypen vid hover */
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Glow-effekt vid hover */
+            transform: scale(1.2); 
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); 
         }
     header nav ul {
         display: flex;
@@ -30,11 +30,11 @@
 
         header nav ul li a {
             text-decoration: none;
-            color: white; /* Vit färg på texten i navbaren */
+            color: white; 
             font-weight: bold;
         }
 
             header nav ul li a:hover {
-                color: #002d50; /* Highlight color inspired by Libera */
+                color: #002d50; 
             }
 

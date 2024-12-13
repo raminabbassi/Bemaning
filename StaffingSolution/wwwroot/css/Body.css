@@ -4,9 +4,9 @@ body {
     margin: 0;
     padding: 0;
     color: white;
-    background: #e66296; /* Basfärg för bakgrund */
-    background: linear-gradient(135deg, green, blue 100%); /* Gradient bakgrund */
-    min-height: 100vh; /* Fyll hela höjden av sidan */
+    background: #e66296;
+    background: linear-gradient(135deg, green, blue 100%);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }

@@ -93,7 +93,6 @@ ul {
             background-color: #ffffff;
         }
 
-/* Responsiv design */
 @media(max-width: 767px) {
     .footer-col {
         width: 50%;
