@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StaffingSolution.Migrations
 {
     /// <inheritdoc />
-    public partial class Bemaning : Migration
+    public partial class bemaning : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

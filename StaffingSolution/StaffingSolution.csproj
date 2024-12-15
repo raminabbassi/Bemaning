@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Migartions\" />
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
 </Project>

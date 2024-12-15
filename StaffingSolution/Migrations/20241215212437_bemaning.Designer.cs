@@ -12,8 +12,8 @@ using StaffingSolution.Data;
 namespace StaffingSolution.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241213112818_Bemaning")]
-    partial class Bemaning
+    [Migration("20241215212437_bemaning")]
+    partial class bemaning
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

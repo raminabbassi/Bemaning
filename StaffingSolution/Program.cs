@@ -18,7 +18,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<JobController>(); // Lägg till JobController som tjänst
 // Register the database context.
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=RPABLO;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
 // Register repositories and services.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
