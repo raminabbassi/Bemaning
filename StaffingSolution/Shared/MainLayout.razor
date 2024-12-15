@@ -17,7 +17,7 @@
                 @if (isLoggedIn)
                 {
                     <li><span>Inloggad som: @loggedInUser</span></li>
-                    <li><a class="button" href="/logout">Logga ut</a></li>
+                    <li><a class="button" href="/BackEndPages/logout">Logga ut</a></li>
                 }
                 else
                 {
@@ -75,13 +75,25 @@
 
     protected override void OnInitialized()
     {
+        UpdateLoginState();
+        AuthService.OnChange += HandleAuthStateChange;
+    }
+
+    private void HandleAuthStateChange()
+    {
+        UpdateLoginState();
+        StateHasChanged();
+    }
+
+    private void UpdateLoginState()
+    {
         isLoggedIn = AuthService.IsLoggedIn();
-        loggedInUser = AuthService.GetLoggedInUser();
-        AuthService.OnChange += StateHasChanged;
+        loggedInUser = isLoggedIn ? AuthService.GetLoggedInUser() : string.Empty;
     }
 
     public void Dispose()
     {
-        AuthService.OnChange -= StateHasChanged;
+        AuthService.OnChange -= HandleAuthStateChange;
     }
+
 }

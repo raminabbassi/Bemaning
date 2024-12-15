@@ -13,10 +13,8 @@ namespace StaffingSolution.Tests
         [Fact]
         public void Job_DefaultConstructor_ShouldSetPropertiesToNull()
         {
-            // Arrange & Act
             var job = new Job();
 
-            // Assert
             Assert.Null(job.Title);
             Assert.Null(job.Location);
             Assert.Null(job.Description);
@@ -29,7 +27,6 @@ namespace StaffingSolution.Tests
         [Fact]
         public void Job_SetProperties_ShouldStoreValues()
         {
-            // Arrange
             var job = new Job
             {
                 Title = "Software Developer",
@@ -40,7 +37,6 @@ namespace StaffingSolution.Tests
                 Requirements=" Minst 1 års erfarenhet av lagerarbete"
             };
 
-            // Assert
             Assert.Equal("Software Developer", job.Title);
             Assert.Equal("Stockholm", job.Location);
             Assert.Equal("Develop and maintain software solutions.", job.Description);

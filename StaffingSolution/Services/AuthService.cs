@@ -12,69 +12,66 @@ namespace StaffingSolution.Services
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        // Event för att notifiera om statusändring
         public event Action OnChange;
+
+        private bool isAuthenticated = false;
+        private string loggedInEmail = string.Empty;
 
         public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
         }
-
-        // Logga in användare och notifiera om statusändring
         public bool Login(string email, string password)
         {
             var user = _userRepository.GetByEmail(email);
-            var isAuthenticated = user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            isAuthenticated = user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
 
             if (isAuthenticated)
             {
+                loggedInEmail = email;
                 NotifyStateChanged();
+                Console.WriteLine("Nu är du inloggad.");
+            }
+            else
+            {
+                Console.WriteLine("Fel e-post eller lösenord.");
             }
 
             return isAuthenticated;
         }
-
-        // Registrera ny användare
+        public void Logout()
+        {
+            isAuthenticated = false;
+            loggedInEmail = string.Empty;
+            NotifyStateChanged();
+            Console.WriteLine("Du är nu utloggad.");
+        }
         public void Register(string email, string password)
         {
             if (_userRepository.GetByEmail(email) != null)
+            {
+                Console.WriteLine("E-post används redan.");
                 throw new InvalidOperationException("E-post används redan.");
+            }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             _userRepository.Add(new User { Email = email, PasswordHash = hashedPassword });
-        }
 
-        // Hämta e-post för inloggad användare
-        public string GetCurrentUserEmail()
-        {
-            var user = _httpContextAccessor.HttpContext?.User;
-            if (user?.Identity?.IsAuthenticated == true)
-            {
-                return user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
-            }
-            return string.Empty;
+            Console.WriteLine("Du är nu registrerad.");
         }
-
-        // Kontrollera om användaren är inloggad
         public bool IsLoggedIn()
         {
-            var user = _httpContextAccessor.HttpContext?.User;
-            return user?.Identity?.IsAuthenticated == true;
+            return isAuthenticated;
         }
-
-        // Hämta information om inloggad användare
         public string GetLoggedInUser()
         {
-            var user = _httpContextAccessor.HttpContext?.User;
-            if (user?.Identity?.IsAuthenticated == true)
-            {
-                return user.FindFirst(ClaimTypes.Email)?.Value ?? "Okänd användare";
-            }
-            return "Inte inloggad";
+            return isAuthenticated ? loggedInEmail : "Inte inloggad";
         }
-
-        // Notifiera om statusändring
+        public string GetCurrentUserEmail()
+        {
+            return isAuthenticated ? loggedInEmail : string.Empty;
+        }
         private void NotifyStateChanged() => OnChange?.Invoke();
     }
 }

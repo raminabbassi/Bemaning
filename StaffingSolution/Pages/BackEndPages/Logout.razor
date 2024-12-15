@@ -1,0 +1,17 @@
+﻿@page "/BackEndPages/Logout"
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using StaffingSolution.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+<h3>Logout</h3>
+
+<p>Du har blivit utloggad...</p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AuthService.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}

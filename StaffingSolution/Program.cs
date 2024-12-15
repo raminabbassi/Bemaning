@@ -12,14 +12,11 @@ using StaffingSolution.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<JobController>(); // Lägg till JobController som tjänst
-// Register the database context.
+builder.Services.AddScoped<JobController>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
-// Register repositories and services.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddScoped<AuthService>();

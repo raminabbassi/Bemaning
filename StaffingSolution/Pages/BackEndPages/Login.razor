@@ -2,27 +2,37 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components
 @using StaffingSolution.Services
+@using System.ComponentModel.DataAnnotations
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 
-<h3>Logga in</h3>
+<link href="/css/Login.css" rel="stylesheet" />
 
-<EditForm Model="loginModel" OnValidSubmit="LoginUser">
-    <div>
-        <label for="email">E-post:</label>
-        <InputText id="email" @bind-Value="loginModel.Email" placeholder="E-post" />
-    </div>
-    <div>
-        <label for="password">Lösenord:</label>
-        <InputText id="password" type="password" @bind-Value="loginModel.Password" placeholder="Lösenord" />
-    </div>
-    <button type="submit">Logga in</button>
-</EditForm>
+<h3>Logga in</h3>
 
 @if (!string.IsNullOrEmpty(ErrorMessage))
 {
-    <p style="color: red;">@ErrorMessage</p>
+    <div class="alert alert-danger">@ErrorMessage</div>
 }
+
+<EditForm Model="loginModel" OnValidSubmit="LoginUser" class="login-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="email">E-post</label>
+        <InputText id="email" @bind-Value="loginModel.Email" class="form-control" placeholder="Ange din e-post" />
+        <ValidationMessage For="() => loginModel.Email" />
+    </div>
+
+    <div>
+        <label for="password">Lösenord</label>
+        <InputText id="password" type="password" @bind-Value="loginModel.Password" class="form-control" placeholder="Ange ditt lösenord" />
+        <ValidationMessage For="() => loginModel.Password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Logga in</button>
+</EditForm>
 
 @code {
     private LoginModel loginModel = new();
@@ -30,11 +40,13 @@
 
     private async Task LoginUser()
     {
+        ErrorMessage = string.Empty;
+
         var isLoggedIn = AuthService.Login(loginModel.Email, loginModel.Password);
         if (isLoggedIn)
         {
             Console.WriteLine("Inloggning lyckades!");
-            NavigationManager.NavigateTo("/BackEndPages/joboverview"); // Omdirigera till översiktssidan
+            NavigationManager.NavigateTo("/BackEndPages/joboverview");
         }
         else
         {
@@ -44,7 +56,11 @@
 
     public class LoginModel
     {
+        [Required(ErrorMessage = "E-post är obligatoriskt.")]
+        [EmailAddress(ErrorMessage = "Ange en giltig e-postadress.")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Lösenord är obligatoriskt.")]
         public string Password { get; set; }
     }
 }

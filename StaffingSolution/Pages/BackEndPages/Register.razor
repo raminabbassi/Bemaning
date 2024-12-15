@@ -5,7 +5,20 @@
 @using StaffingSolution.Services
 @inject AuthService AuthService
 
+<link href="/css/register.css" rel="stylesheet" />
+
 <h3>Registrera dig</h3>
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
 <EditForm Model="registerModel" OnValidSubmit="RegisterUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -33,23 +46,28 @@
 
 @code {
     private RegisterModel registerModel = new RegisterModel();
+    private string successMessage; 
+    private string errorMessage; 
 
     private async Task RegisterUser()
     {
+        successMessage = string.Empty;
+        errorMessage = string.Empty;
+
         if (registerModel.Password != registerModel.ConfirmPassword)
         {
-            Console.WriteLine("Lösenorden matchar inte!");
+            errorMessage = "Lösenorden matchar inte!";
             return;
         }
 
         try
         {
             AuthService.Register(registerModel.Email, registerModel.Password);
-            Console.WriteLine("Registreringen lyckades!");
+            successMessage = "Registreringen lyckades!";
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Ett fel uppstod: {ex.Message}");
+            errorMessage = $"Ett fel uppstod: {ex.Message}";
         }
     }
 
@@ -67,4 +85,3 @@
         public string ConfirmPassword { get; set; }
     }
 }
-
