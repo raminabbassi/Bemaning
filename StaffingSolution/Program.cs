@@ -9,6 +9,7 @@ using StaffingSolution.Services;
 using StaffingSolution.Interfaces;
 using System;
 using StaffingSolution.Controllers;
+using StaffingSolution.Observers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<JobController>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
+builder.Services.AddSingleton<Notifier>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddScoped<AuthService>();
