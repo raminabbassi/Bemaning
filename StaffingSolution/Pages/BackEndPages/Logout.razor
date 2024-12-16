@@ -7,11 +7,3 @@
 <h3>Logout</h3>
 
 <p>Du har blivit utloggad...</p>
-
-@code {
-    protected override void OnInitialized()
-    {
-        AuthService.Logout();
-        NavigationManager.NavigateTo("/");
-    }
-}

@@ -89,29 +89,9 @@
     <label for="coverLetter">Personligt brev</label>
     <textarea id="coverLetter" name="coverLetter" required></textarea>
 
+    <label for="cv">Ladda upp ditt CV</label>
+    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" />
+
     <button type="submit">Skicka Ansökan</button>
 </form>
 
-@code {
-    [Parameter]
-    public string jobTitle { get; set; }
-    private Job job;
-
-    protected override void OnInitialized()
-    {
-        job = JobController.GetJobs().FirstOrDefault(j => j.Title == jobTitle);
-
-        if (job == null)
-        {
-
-            job = new Job
-                {
-                    Title = "Okänt jobb",
-                    Location = "Ingen plats angiven",
-                    Description = "Ingen beskrivning tillgänglig",
-                    Responsibilities = "Ingen information tillgänglig",
-                    Requirements = "Ingen information tillgängliga"
-                };
-        }
-    }
-}

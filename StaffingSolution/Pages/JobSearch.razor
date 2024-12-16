@@ -17,12 +17,3 @@
         </div>
     }
 </div>
-
-@code {
-    private List<Job> jobs = new List<Job>();
-
-    protected override void OnInitialized()
-    {
-        jobs = JobController.GetJobs();
-    }
-}
