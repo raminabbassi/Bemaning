@@ -6,6 +6,8 @@ namespace StaffingSolution.Interfaces
     {
         Task<List<JobApplication>> GetJobsAppliedByUser(string userEmail);
         Task UpdateJobApplicationStatus(int applicationId, string status);
-        Task AddJobApplication(string title, string company, string userEmail);   
+        Task AddJobApplication(string title, string company, string userEmail);
+        bool CanApplyForJob(string userId);
+
     }
 }

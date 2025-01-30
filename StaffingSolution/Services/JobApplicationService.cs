@@ -49,5 +49,10 @@ namespace StaffingSolution.Services
                 _notifier.Notify($"Job application with ID {applicationId} status updated to '{status}'.");
             }
         }
+        public bool CanApplyForJob(string userId)
+        {
+            int applicationsCount = _context.Applications.Count(a => a.UserId == userId);
+            return applicationsCount < 3;
+        }
     }
 }
