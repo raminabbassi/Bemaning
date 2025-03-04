@@ -1,4 +1,4 @@
-name: CI Build & Test
+name: CI/CD Pipeline
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +21,59 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
+    - name: Cache NuGet dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name:  Restore dependencies
       run: dotnet restore
 
-    - name: Build project
+    - name:  Build project
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+    - name:  Run tests
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test_results.trx"
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: TestResults/test_results.trx
+
+  analyze-code:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Roslyn analyzers
+      run: dotnet tool install --global dotnet-format
+
+    - name:  Run Roslyn format check
+      run: dotnet format --verify-no-changes
+
+    - name: Run .NET Code Analysis
+      run: dotnet build --configuration Release /p:TreatWarningsAsErrors=true
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: analyze-code
+    if: github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Deploy Application (Fake Step)
+      run: echo "Deploying application..."
