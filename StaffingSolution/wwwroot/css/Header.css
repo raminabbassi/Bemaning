@@ -13,7 +13,7 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
         cursor: pointer;
         position: absolute;
-        left: 480px; 
+        left: 360px; 
         top: 6px;
     }
         header .logo:hover {
