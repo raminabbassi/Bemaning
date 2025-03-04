@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StaffingSolution.Data;
 using StaffingSolution.Models;
-using StaffingSolution.Observers;
 using StaffingSolution.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +22,7 @@ namespace StaffingSolution.Tests
 
             _context = new AppDbContext(options);
 
-            var notifier = new Notifier();
-            notifier.Attach(new EmailService()); 
 
-            _service = new JobApplicationService(_context, notifier);
 
             _context.JobApplications.AddRange(new List<JobApplication>
             {

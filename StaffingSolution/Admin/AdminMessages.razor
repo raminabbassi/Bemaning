@@ -1,0 +1,117 @@
+﻿@page "/admin/messages"
+@using StaffingSolution.Models
+@using StaffingSolution.Repositories
+@using StaffingSolution.Services
+@inject ContactRepository ContactRepo
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+<link href="/css/Admin.css" rel="stylesheet" />
+
+<h3 class="title">📩 Inkomna Meddelanden</h3>
+
+@if (!IsAdmin)
+{
+    <p class="error-message">❌ Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
+}
+else if (messages == null)
+{
+    <p class="loading-message">🔄 Laddar meddelanden...</p>
+}
+else if (messages.Count == 0)
+{
+    <p class="info-message">📭 Inga meddelanden att visa.</p>
+}
+else
+{
+    <p class="success-message">✅ Visar @messages.Count meddelanden</p> 
+
+    <table class="message-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Namn</th>
+                <th>E-post</th>
+                <th>Meddelande</th>
+                <th>Status</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < messages.Count; i++)
+            {
+                <tr>
+                    <td>@messages[i].Id</td>
+                    <td>@messages[i].Name</td>
+                    <td>@messages[i].Email</td>
+                    <td>@messages[i].Message</td>
+                    <td>@(messages[i].IsRead ? "✔ Läst" : "❌ Oläst")</td>
+                    <td>
+                        <button @onclick="() => MarkAsRead(messages[i].Id)">✔</button>
+                        <button @onclick="() => DeleteMessage(messages[i].Id)">🗑</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+}
+
+
+@code {
+    private List<ContactMessage> messages = new();
+    private bool IsAdmin = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            IsAdmin = AuthService.IsAdmin();
+
+            if (!IsAdmin)
+            {
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                messages = await ContactRepo.GetAllMessagesAsync();
+
+                StateHasChanged(); 
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"⚠️ Fel vid hämtning av meddelanden: {ex.Message}");
+        }
+    }
+
+
+
+    private async Task MarkAsRead(int messageId)
+    {
+        try
+        {
+            await ContactRepo.MarkMessageAsReadAsync(messageId);
+            messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"⚠️ Fel vid uppdatering av meddelande: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteMessage(int messageId)
+    {
+        try
+        {
+            await ContactRepo.DeleteMessageAsync(messageId);
+            messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"⚠️ Fel vid radering av meddelande: {ex.Message}");
+        }
+    }
+
+
+}

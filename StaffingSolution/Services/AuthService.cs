@@ -22,6 +22,8 @@ namespace StaffingSolution.Services
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
         }
+        private bool isAdmin = false; 
+
         public bool Login(string email, string password)
         {
             var user = _userRepository.GetByEmail(email);
@@ -30,8 +32,9 @@ namespace StaffingSolution.Services
             if (isAuthenticated)
             {
                 loggedInEmail = email;
+                isAdmin = user.IsAdmin; 
                 NotifyStateChanged();
-                Console.WriteLine("Nu är du inloggad.");
+                Console.WriteLine($"Nu är du inloggad. Admin: {isAdmin}");
             }
             else
             {
@@ -40,6 +43,12 @@ namespace StaffingSolution.Services
 
             return isAuthenticated;
         }
+
+        public bool IsAdmin()
+        {
+            return isAuthenticated && isAdmin;
+        }
+
         public void Logout()
         {
             isAuthenticated = false;
@@ -72,6 +81,8 @@ namespace StaffingSolution.Services
         {
             return isAuthenticated ? loggedInEmail : string.Empty;
         }
+
+
         private void NotifyStateChanged() => OnChange?.Invoke();
     }
 }

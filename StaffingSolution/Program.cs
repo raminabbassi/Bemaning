@@ -9,20 +9,23 @@ using StaffingSolution.Services;
 using StaffingSolution.Interfaces;
 using System;
 using StaffingSolution.Controllers;
-using StaffingSolution.Observers;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<JobController>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
-builder.Services.AddSingleton<Notifier>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ContactRepository>();
+builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<InterviewRepository>();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 

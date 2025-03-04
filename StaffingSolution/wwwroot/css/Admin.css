@@ -1,0 +1,72 @@
+﻿.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.loading-message, .info-message {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    color: gray;
+}
+
+.message-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .message-table th, .message-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .message-table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+.btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.message-table td, .message-table th {
+    color: black !important;
+    background-color: white !important;
+    border: 1px solid #ddd;
+}
+
+.message-table tr {
+    display: table-row !important;
+}
+
+
+
+.unread-message {
+    background-color: #ffecec !important;
+}
+
+.read-message {
+    background-color: #e6ffe6 !important;
+}

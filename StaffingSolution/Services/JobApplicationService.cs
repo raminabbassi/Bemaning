@@ -6,19 +6,16 @@ using StaffingSolution.Data;
 using StaffingSolution.Interfaces;
 using StaffingSolution.Models;
 using StaffingSolution.Factories; 
-using StaffingSolution.Observers;
 
 namespace StaffingSolution.Services
 {
     public class JobApplicationService : IJobApplicationService
     {
         private readonly AppDbContext _context;
-        private readonly Notifier _notifier; 
 
-        public JobApplicationService(AppDbContext context, Notifier notifier)
+        public JobApplicationService(AppDbContext context)
         {
             _context = context;
-            _notifier = notifier;
         }
 
         public async Task<List<JobApplication>> GetJobsAppliedByUser(string userEmail)
@@ -35,7 +32,6 @@ namespace StaffingSolution.Services
             _context.JobApplications.Add(newApplication);
             await _context.SaveChangesAsync();
 
-            _notifier.Notify($"New job application for {title} at {company} was created by {userEmail}.");
         }
 
         public async Task UpdateJobApplicationStatus(int applicationId, string status)
@@ -46,7 +42,6 @@ namespace StaffingSolution.Services
                 application.Status = status;
                 await _context.SaveChangesAsync();
 
-                _notifier.Notify($"Job application with ID {applicationId} status updated to '{status}'.");
             }
         }
         public bool CanApplyForJob(string userId)

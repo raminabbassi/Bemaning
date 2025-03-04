@@ -1,27 +1,67 @@
 ﻿@page "/contact"
-<main>
-    <h1>Kontakt</h1>
+@using StaffingSolution.Services
+@inject ContactService ContactService
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+<link href="/css/Contact.css" rel="stylesheet" />
 
-    <div class="contact-container">
-        <div class="contact-info">
-            <p>Har du frågor? Kontakta oss på:</p>
-            <p><i class="fa fa-envelope"></i> Email: <a href="mailto:info@Extendly.se">info@Extendly.se</a></p>
-            <p><i class="fa fa-phone"></i> Telefon: 010-123456</p>
-        </div>
+<h3 class="title">Kontakt</h3>
 
-        <form>
-            <h3>Skicka oss ett meddelande</h3>
+<EditForm Model="contactRequest" OnValidSubmit="SubmitForm" class="contact-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-            <label for="name">Namn:</label>
-            <input type="text" id="name" name="name" required />
-
-            <label for="email">E-post:</label>
-            <input type="email" id="email" name="email" required />
-
-            <label for="message">Meddelande:</label>
-            <textarea id="message" name="message" required></textarea>
-
-            <button type="submit">Skicka</button>
-        </form>
+    <div class="form-group">
+        <label for="name">Namn:</label>
+        <InputText id="name" @bind-Value="contactRequest.Name" class="form-control" placeholder="Ange ditt namn" />
+        <ValidationMessage For="() => contactRequest.Name" />
     </div>
-</main>
+
+    <div class="form-group">
+        <label for="email">Din E-postadress:</label>
+        <InputText id="email" @bind-Value="contactRequest.Email" class="form-control" type="email" placeholder="Ange din e-post" />
+        <ValidationMessage For="() => contactRequest.Email" />
+    </div>
+
+    <div class="form-group">
+        <label for="message">Ditt meddelande:</label>
+        <InputTextArea id="message" @bind-Value="contactRequest.Message" class="form-control" placeholder="Skriv ditt meddelande" />
+        <ValidationMessage For="() => contactRequest.Message" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Skicka</button>
+</EditForm>
+
+<p class="feedback-message">@feedbackMessage</p>
+
+
+@code {
+    private ContactRequest contactRequest = new ContactRequest();
+    private string feedbackMessage;
+
+    private async Task SubmitForm()
+    {
+        Console.WriteLine("🔹 SubmitForm() anropades!");
+
+        feedbackMessage = await ContactService.SaveAndSendEmailAsync(
+            contactRequest.Name,
+            contactRequest.Email,
+            contactRequest.Message
+        );
+
+        contactRequest = new ContactRequest();
+    }
+
+    private class ContactRequest
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Message { get; set; }
+    }
+}

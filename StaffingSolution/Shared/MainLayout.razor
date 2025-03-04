@@ -14,6 +14,12 @@
                 <li><a href="/career">Karriär</a></li>
                 <li><a href="/about">Om Oss</a></li>
                 <li><a href="/contact">Kontakt</a></li>
+                <li><a href="/book-interview">Boka Intervju</a></li>
+                @if (AuthService.IsAdmin())
+                 {
+                    <li><a href="/admin/messages">Admin Pane</a></li>
+                 }
+
                 @if (isLoggedIn)
                 {
                     <li><span>Inloggad som: @loggedInUser</span></li>
@@ -52,6 +58,7 @@
                     <li><a href="/career">Karriär</a></li>
                     <li><a href="/about">Om Oss</a></li>
                     <li><a href="/contact">Kontakt</a></li>
+                    <li><a href="/book-interview">Boka Intervju</a></li>
                 </ul>
             </div>
             <div class="footer-col">
