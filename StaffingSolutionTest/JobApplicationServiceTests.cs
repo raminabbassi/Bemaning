@@ -17,12 +17,11 @@ namespace StaffingSolution.Tests
         public JobApplicationServiceTests()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
-               .UseInMemoryDatabase(databaseName: System.Guid.NewGuid().ToString())
+               .UseInMemoryDatabase(databaseName: System.Guid.NewGuid().ToString()) 
                .Options;
 
             _context = new AppDbContext(options);
-
-
+            _service = new JobApplicationService(_context); 
 
             _context.JobApplications.AddRange(new List<JobApplication>
             {
@@ -71,7 +70,6 @@ namespace StaffingSolution.Tests
             Assert.NotNull(addedApplication);
             Assert.Equal("Leadership Ltd", addedApplication.Company);
         }
-
 
         [Fact]
         public async Task UpdateJobApplicationStatus_ShouldUpdateStatus()
