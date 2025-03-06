@@ -1,0 +1,54 @@
+﻿@page "/admin/dashboard"
+@using StaffingSolution.Services
+@inject StatisticsService StatisticsService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+<link href="/css/Statistik.css" rel="stylesheet" />
+
+<h3 class="title">Admin Statistik</h3>
+
+@if (!IsAdmin)
+{
+    <p class="error-message"> Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
+}
+else
+{
+    <div class="stats-container">
+        <div class="stat-card">
+            <h4>📄 Antal Jobbansökningar</h4>
+            <p>@TotalJobApplications</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>👥 Antal Användare</h4>
+            <p>@TotalUsers</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>📩 Inkomna Meddelanden</h4>
+            <p>@TotalMessages</p>
+        </div>
+    </div>
+}
+
+@code {
+    private bool IsAdmin = false;
+    private int TotalJobApplications;
+    private int TotalUsers;
+    private int TotalMessages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsAdmin = AuthService.IsAdmin();
+        if (!IsAdmin)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            TotalJobApplications = await StatisticsService.GetTotalJobApplicationsAsync();
+            TotalUsers = await StatisticsService.GetTotalUsersAsync();
+            TotalMessages = await StatisticsService.GetTotalMessagesAsync();
+        }
+    }
+}

@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ContactRepository>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<InterviewRepository>();
+builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 

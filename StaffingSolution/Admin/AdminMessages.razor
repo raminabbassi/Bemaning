@@ -7,23 +7,23 @@
 @inject NavigationManager Navigation
 <link href="/css/Admin.css" rel="stylesheet" />
 
-<h3 class="title">📩 Inkomna Meddelanden</h3>
+<h3 class="title">Inkomna Meddelanden</h3>
 
 @if (!IsAdmin)
 {
-    <p class="error-message">❌ Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
+    <p class="error-message"> Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
 }
 else if (messages == null)
 {
-    <p class="loading-message">🔄 Laddar meddelanden...</p>
+    <p class="loading-message"> Laddar meddelanden...</p>
 }
 else if (messages.Count == 0)
 {
-    <p class="info-message">📭 Inga meddelanden att visa.</p>
+    <p class="info-message"> Inga meddelanden att visa.</p>
 }
 else
 {
-    <p class="success-message">✅ Visar @messages.Count meddelanden</p> 
+    <p class="success-message"> Visar @messages.Count meddelanden</p> 
 
     <table class="message-table">
         <thead>
@@ -46,8 +46,8 @@ else
                     <td>@messages[i].Message</td>
                     <td>@(messages[i].IsRead ? "✔ Läst" : "❌ Oläst")</td>
                     <td>
-                        <button @onclick="() => MarkAsRead(messages[i].Id)">✔</button>
-                        <button @onclick="() => DeleteMessage(messages[i].Id)">🗑</button>
+                        <button @onclick="() => MarkAsRead(messages[i].Id)">+</button>
+                        <button @onclick="() => DeleteMessage(messages[i].Id)">X</button>
                     </td>
                 </tr>
             }
@@ -81,7 +81,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"⚠️ Fel vid hämtning av meddelanden: {ex.Message}");
+            Console.WriteLine($"Fel vid hämtning av meddelanden: {ex.Message}");
         }
     }
 
@@ -96,7 +96,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"⚠️ Fel vid uppdatering av meddelande: {ex.Message}");
+            Console.WriteLine($" Fel vid uppdatering av meddelande: {ex.Message}");
         }
     }
 
@@ -109,7 +109,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"⚠️ Fel vid radering av meddelande: {ex.Message}");
+            Console.WriteLine($"Fel vid radering av meddelande: {ex.Message}");
         }
     }
 
