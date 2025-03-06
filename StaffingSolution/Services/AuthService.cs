@@ -60,15 +60,17 @@ namespace StaffingSolution.Services
         {
             if (_userRepository.GetByEmail(email) != null)
             {
-                Console.WriteLine("E-post används redan.");
                 throw new InvalidOperationException("E-post används redan.");
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             _userRepository.Add(new User { Email = email, PasswordHash = hashedPassword });
 
-            Console.WriteLine("Du är nu registrerad.");
+            var emailService = _httpContextAccessor.HttpContext.RequestServices.GetService<EmailService>();
+            _ = emailService.SendEmailAsync(email, "Välkommen till Bemaning!",
+                $"Hej!<br><br> Du har nu registrerat dig på vår plattform.<br><br> Mvh, Bemaning-teamet");
         }
+
         public bool IsLoggedIn()
         {
             return isAuthenticated;
