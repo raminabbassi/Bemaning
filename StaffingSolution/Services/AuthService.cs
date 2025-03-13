@@ -46,8 +46,9 @@ namespace StaffingSolution.Services
 
         public bool IsAdmin()
         {
-            return isAuthenticated && isAdmin;
+            return isAuthenticated && loggedInEmail == "ramin.abba@hotmail.com";
         }
+
 
         public void Logout()
         {
