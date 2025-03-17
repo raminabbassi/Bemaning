@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StaffingSolution.Data;
 
@@ -11,9 +12,11 @@ using StaffingSolution.Data;
 namespace StaffingSolution.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317020851_scheduleadmin")]
+    partial class scheduleadmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,32 +76,6 @@ namespace StaffingSolution.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Applications");
-                });
-
-            modelBuilder.Entity("StaffingSolution.Models.Booking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("BookedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ScheduleId")
-                        .IsUnique();
-
-                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("StaffingSolution.Models.ContactMessage", b =>
@@ -212,23 +189,6 @@ namespace StaffingSolution.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("StaffingSolution.Models.Booking", b =>
-                {
-                    b.HasOne("StaffingSolution.Models.AdminSchedule", "Schedule")
-                        .WithOne("Booking")
-                        .HasForeignKey("StaffingSolution.Models.Booking", "ScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Schedule");
-                });
-
-            modelBuilder.Entity("StaffingSolution.Models.AdminSchedule", b =>
-                {
-                    b.Navigation("Booking")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

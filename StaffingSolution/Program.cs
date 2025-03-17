@@ -25,9 +25,11 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ContactRepository>();
 builder.Services.AddScoped<ContactService>();
-builder.Services.AddScoped<InterviewRepository>();
 builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<BookingService>();
+
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 

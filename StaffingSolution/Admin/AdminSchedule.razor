@@ -1,0 +1,164 @@
+﻿@page "/admin/schedule"
+@using StaffingSolution.Services
+@using StaffingSolution.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@inject ScheduleService ScheduleService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<h3> Admin Schema</h3>
+
+@if (!IsAdmin)
+{
+    <p class="error-message"> Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
+    Navigation.NavigateTo("/Unauthorized");
+}
+else
+{
+    <EditForm Model="scheduleModel" OnValidSubmit="GenerateSchedule">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label>Välj dag:</label>
+            <InputDate @bind-Value="scheduleModel.SelectedDate" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label> Besökstid (minuter):</label>
+            <InputNumber @bind-Value="scheduleModel.VisitDuration" class="form-control" min="10" max="60" />
+        </div>
+
+        <div class="form-group">
+            <label> Rast efter varje besök (minuter):</label>
+            <InputNumber @bind-Value="scheduleModel.BreakTime" class="form-control" min="0" max="60" />
+        </div>
+
+        <div class="form-group">
+            <label> Antal besök per dag:</label>
+            <InputNumber @bind-Value="scheduleModel.MaxVisits" class="form-control" min="1" max="10" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Skapa schema</button>
+    </EditForm>
+
+    <h4> Tillgängliga tider</h4>
+    <EditForm Model="scheduleModel" OnValidSubmit="SubmitRemoveAvailability">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="available-times-grid">
+            @foreach (var slot in AvailableTimes)
+            {
+                <div class="time-slot">
+                    <label>
+                        <InputRadioGroup @bind-Value="scheduleModel.SelectedSlotId">
+                            <InputRadio Value="@slot.Id" />
+                        </InputRadioGroup>
+                        @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm")
+                    </label>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-danger"> Ta bort vald tid</button>
+    </EditForm>
+
+    <h4> Bokade tider</h4>
+    <EditForm Model="bookingModel" OnValidSubmit="SubmitCancelBooking">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="booked-times-grid">
+            <InputRadioGroup @bind-Value="bookingModel.SelectedBookingId">
+                @foreach (var booking in BookedTimes)
+                {
+                    <div class="booked-slot">
+                        <label>
+                            <InputRadio Value="@booking.Id" />
+                            @booking.StartTime.ToString("yyyy-MM-dd HH:mm") - @booking.EndTime.ToString("HH:mm")
+                            (Bokad av: @booking.BookedBy)
+                        </label>
+                    </div>
+                }
+            </InputRadioGroup>
+        </div>
+
+        <button type="submit" class="btn btn-warning"> Avboka vald tid</button>
+    </EditForm>
+
+}
+
+@code {
+    private ScheduleModel scheduleModel = new();
+    private List<StaffingSolution.Models.AdminSchedule> AvailableTimes = new();
+    private List<StaffingSolution.Models.AdminSchedule> BookedTimes = new();
+    private bool IsAdmin = false;
+    private string AdminEmail = "ramin.abba@hotmail.com";
+    private List<Booking> UserBookings = new();
+    private BookingModel bookingModel = new BookingModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsAdmin = AuthService.IsAdmin();
+        if (!IsAdmin)
+        {
+            Navigation.NavigateTo("/Unauthorized");
+        }
+        else
+        {
+            AvailableTimes = await ScheduleService.GetAvailableTimesAsync(AdminEmail);
+            BookedTimes = await ScheduleService.GetBookedTimesAsync(AdminEmail);
+        }
+    }
+
+    private async Task GenerateSchedule()
+    {
+        DateTime startTime = scheduleModel.SelectedDate.AddHours(9);
+        for (int i = 0; i < scheduleModel.MaxVisits; i++)
+        {
+            DateTime endTime = startTime.AddMinutes(scheduleModel.VisitDuration);
+            await ScheduleService.AddAvailabilityAsync(AdminEmail, startTime, endTime);
+            startTime = endTime.AddMinutes(scheduleModel.BreakTime);
+        }
+
+        AvailableTimes = await ScheduleService.GetAvailableTimesAsync(AdminEmail);
+    }
+
+    private async Task SubmitRemoveAvailability()
+    {
+        if (scheduleModel.SelectedSlotId > 0)
+        {
+            await ScheduleService.CancelBookingAsync(scheduleModel.SelectedSlotId);
+            AvailableTimes = await ScheduleService.GetAvailableTimesAsync("admin@example.com");
+        }
+    }
+
+    private async Task SubmitCancelBooking()
+    {
+        if (bookingModel.SelectedBookingId > 0)
+        {
+            bool isDeleted = await ScheduleService.CancelBookingAsync(bookingModel.SelectedBookingId);
+
+            if (isDeleted)
+            {
+                BookedTimes = await ScheduleService.GetBookedTimesAsync(AdminEmail);
+                StateHasChanged(); 
+            }
+        }
+    }
+    public class ScheduleModel
+    {
+        public DateTime SelectedDate { get; set; } = DateTime.Today;
+        public int VisitDuration { get; set; } = 30;
+        public int BreakTime { get; set; } = 10;
+        public int MaxVisits { get; set; } = 5;
+        public int SelectedSlotId { get; set; }
+    }
+    public class BookingModel
+    {
+        public int SelectedBookingId { get; set; }
+    }
+}

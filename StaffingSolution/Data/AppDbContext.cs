@@ -11,8 +11,9 @@ namespace StaffingSolution.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<Application> Applications { get; set; }
-        public DbSet<InterviewRequest> InterviewRequests { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
+        public DbSet<AdminSchedule> AdminSchedules { get; set; }
+        public DbSet<Booking> Bookings { get; set; } 
 
 
 
