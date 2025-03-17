@@ -42,7 +42,8 @@ else
         IsAdmin = AuthService.IsAdmin();
         if (!IsAdmin)
         {
-            Navigation.NavigateTo("/");
+            Navigation.NavigateTo("/Unauthorized");
+            return;
         }
         else
         {

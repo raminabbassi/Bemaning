@@ -70,14 +70,13 @@ else
 
             if (!IsAdmin)
             {
-                Navigation.NavigateTo("/");
+                Navigation.NavigateTo("/Unauthorized"); 
+                return;
             }
-            else
-            {
-                messages = await ContactRepo.GetAllMessagesAsync();
 
-                StateHasChanged(); 
-            }
+            messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
+
+            StateHasChanged(); 
         }
         catch (Exception ex)
         {
