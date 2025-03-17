@@ -15,6 +15,7 @@
     <p class="error-message"> Åtkomst nekad! Du har inte behörighet att se denna sida.</p>
     Navigation.NavigateTo("/Unauthorized");
 }
+
 else
 {
     <EditForm Model="scheduleModel" OnValidSubmit="GenerateSchedule">
@@ -129,12 +130,15 @@ else
 
     private async Task SubmitRemoveAvailability()
     {
-        if (scheduleModel.SelectedSlotId > 0)
+        if (scheduleModel.SelectedSlotId > 0) 
         {
-            await ScheduleService.CancelBookingAsync(scheduleModel.SelectedSlotId);
-            AvailableTimes = await ScheduleService.GetAvailableTimesAsync("admin@example.com");
+            await ScheduleService.RemoveSlotAsync(scheduleModel.SelectedSlotId);
+            AvailableTimes = await ScheduleService.GetAvailableTimesAsync(AdminEmail);
+            scheduleModel.SelectedSlotId = 0; 
+            StateHasChanged(); 
         }
     }
+
 
     private async Task SubmitCancelBooking()
     {

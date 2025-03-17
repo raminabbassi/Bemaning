@@ -11,10 +11,12 @@ namespace StaffingSolution.Services
     public class BookingService
     {
         private readonly AppDbContext _context;
+        private readonly EmailService _emailService;
 
-        public BookingService(AppDbContext context)
+        public BookingService(AppDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService; 
         }
 
         public async Task<bool> BookTimeAsync(int scheduleId, string userEmail)
@@ -22,7 +24,7 @@ namespace StaffingSolution.Services
             var schedule = await _context.AdminSchedules.FindAsync(scheduleId);
 
             if (schedule == null || schedule.IsBooked)
-                return false; 
+                return false;
 
             var booking = new Booking
             {
@@ -36,6 +38,9 @@ namespace StaffingSolution.Services
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
+
+            await SendBookingConfirmationEmail(userEmail, schedule.StartTime, schedule.EndTime);
+
             return true;
         }
 
@@ -60,8 +65,12 @@ namespace StaffingSolution.Services
 
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
+
+            await SendCancellationEmail(booking.UserEmail, booking.Schedule.StartTime, booking.Schedule.EndTime);
+
             return true;
         }
+
         public async Task<List<AdminSchedule>> GetAvailableTimesAsync()
         {
             return await _context.AdminSchedules
@@ -70,5 +79,20 @@ namespace StaffingSolution.Services
                 .ToListAsync();
         }
 
+        private async Task SendBookingConfirmationEmail(string userEmail, DateTime startTime, DateTime endTime)
+        {
+            string subject = "Bekräftelse av bokad tid";
+            string message = $"Hej, <br><br> Din bokning är bekräftad! <br> Datum & tid: {startTime:yyyy-MM-dd HH:mm} - {endTime:HH:mm} <br><br> Vänliga hälsningar, <br> Extendly";
+
+            await _emailService.SendEmailAsync(userEmail, subject, message);
+        }
+
+        private async Task SendCancellationEmail(string userEmail, DateTime startTime, DateTime endTime)
+        {
+            string subject = "Bekräftelse av avbokad tid";
+            string message = $"Hej, <br><br> Din bokning har blivit avbokad. <br> Tid: {startTime:yyyy-MM-dd HH:mm} - {endTime:HH:mm} <br><br> Vänliga hälsningar, <br> Extendly";
+
+            await _emailService.SendEmailAsync(userEmail, subject, message);
+        }
     }
 }

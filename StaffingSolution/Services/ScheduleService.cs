@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StaffingSolution.Data;
 using StaffingSolution.Models;
+using StaffingSolution.Services;
 
 public class ScheduleService
 {
     private readonly AppDbContext _context;
+    private readonly EmailService _emailService;
 
-    public ScheduleService(AppDbContext context)
+    public ScheduleService(AppDbContext context, EmailService emailService)
     {
         _context = context;
+        _emailService = emailService;
     }
 
     public async Task<List<AdminSchedule>> GetAvailableTimesAsync(string adminEmail)
@@ -37,18 +40,15 @@ public class ScheduleService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> BookTimeAsync(int scheduleId, string userEmail)
+    public async Task RemoveSlotAsync(int slotId)
     {
-        var schedule = await _context.AdminSchedules.FindAsync(scheduleId);
+        var slot = await _context.AdminSchedules.FindAsync(slotId);
 
-        if (schedule == null || schedule.IsBooked)
-            return false;
-
-        schedule.IsBooked = true;
-        schedule.BookedBy = userEmail;
-
-        await _context.SaveChangesAsync();
-        return true;
+        if (slot != null)
+        {
+            _context.AdminSchedules.Remove(slot);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task<List<AdminSchedule>> GetBookedTimesAsync(string adminEmail)
@@ -66,10 +66,28 @@ public class ScheduleService
         if (schedule == null || !schedule.IsBooked)
             return false;
 
+        string? userEmail = schedule.BookedBy;
+        DateTime startTime = schedule.StartTime;
+        DateTime endTime = schedule.EndTime;
+
         schedule.IsBooked = false;
         schedule.BookedBy = null;
 
         await _context.SaveChangesAsync();
+
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            await SendCancellationEmail(userEmail, startTime, endTime);
+        }
+
         return true;
+    }
+
+    private async Task SendCancellationEmail(string userEmail, DateTime startTime, DateTime endTime)
+    {
+        string subject = "Din bokade tid har avbokats";
+        string message = $"Hej,\n\nDin bokade tid mellan {startTime:yyyy-MM-dd HH:mm} och {endTime:HH:mm} har avbokats av administratören.\n\nVänliga hälsningar,\nExtendly";
+
+        await _emailService.SendEmailAsync(userEmail, subject, message);
     }
 }

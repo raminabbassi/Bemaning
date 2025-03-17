@@ -26,12 +26,22 @@ else
                 <option value="">-- Välj en tid --</option>
                 @foreach (var slot in AvailableTimes)
                 {
-                    <option value="@slot.Id">
-                        @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm")
-                    </option>
+                    if (slot.IsBooked)
+                    {
+                        <option value="@slot.Id" disabled>
+                            @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm") (Bokad)
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@slot.Id">
+                            @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm")
+                        </option>
+                    }
                 }
             </InputSelect>
         </div>
+
 
         <div class="form-group">
             <label for="userEmail">Din e-post:</label>
@@ -46,7 +56,6 @@ else
 @if (UserBookings != null && UserBookings.Count > 0)
 {
     <h4> Dina bokade tider</h4>
-
     <EditForm Model="SelectedBooking" OnValidSubmit="CancelSelectedBooking">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -57,9 +66,12 @@ else
                 <option value="">-- Välj en bokad tid --</option>
                 @foreach (var booking in UserBookings)
                 {
-                    <option value="@booking.Id">
-                        @($"{booking.BookedTime:yyyy-MM-dd HH:mm} - {booking.Schedule.EndTime:HH:mm}")
-                    </option>
+                    if (booking.Schedule != null)
+                    {
+                        <option value="@booking.Id">
+                            @($"{booking.BookedTime:yyyy-MM-dd HH:mm} - {booking.Schedule.EndTime:HH:mm}")
+                        </option>
+                    }
                 }
             </InputSelect>
         </div>
@@ -67,6 +79,11 @@ else
         <button type="submit" class="btn btn-warning"> Avboka</button>
     </EditForm>
 }
+else
+{
+    <p>Inga bokade tider hittades.</p>
+}
+
 
 
 @code {

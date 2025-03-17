@@ -69,7 +69,7 @@ namespace StaffingSolution.Services
 
             var emailService = _httpContextAccessor.HttpContext.RequestServices.GetService<EmailService>();
             _ = emailService.SendEmailAsync(email, "Välkommen till Bemaning!",
-                $"Hej!<br><br> Du har nu registrerat dig på vår plattform.<br><br> Mvh, Bemaning-teamet");
+                $"Hej!<br><br> Du har nu registrerat dig på vår plattform.<br><br> Mvh, Extendly");
         }
 
         public bool IsLoggedIn()

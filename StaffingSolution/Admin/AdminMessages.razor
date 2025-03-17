@@ -44,7 +44,7 @@ else
                     <td>@messages[i].Name</td>
                     <td>@messages[i].Email</td>
                     <td>@messages[i].Message</td>
-                    <td>@(messages[i].IsRead ? "✔ Läst" : "❌ Oläst")</td>
+                    <td>@(messages[i].IsRead ? " Läst" : " Oläst")</td>
                     <td>
                         <button @onclick="() => MarkAsRead(messages[i].Id)">+</button>
                         <button @onclick="() => DeleteMessage(messages[i].Id)">X</button>
