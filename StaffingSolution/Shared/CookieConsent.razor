@@ -1,0 +1,50 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+@if (!hasUserRespondedToCookieConsent)
+{
+    <div class="cookie-overlay"></div>
+    <div class="cookie-popup">
+        <h2>Varför vi använder cookies</h2>
+        <p>
+            Vi använder cookies för att förbättra din upplevelse på vår webbplats. Med hjälp av cookies kan vi analysera trafik,
+            anpassa innehåll och annonser samt ge dig en mer personlig upplevelse. Genom att klicka på "Acceptera" godkänner
+            du att vi sparar cookies på din enhet. Du kan välja att avvisa cookies om du föredrar det.
+        </p>
+        <button class="accept-button" @onclick="AcceptCookies">Acceptera</button>
+        <button class="decline-button" @onclick="DeclineCookies">Neka</button>
+
+    </div>
+}
+
+@code {
+    private bool hasUserRespondedToCookieConsent = false;
+    private bool isFirstRender = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var cookieConsent = await JS.InvokeAsync<string>("getCookie", "UserCookieConsent");
+            if (!string.IsNullOrEmpty(cookieConsent))
+            {
+                hasUserRespondedToCookieConsent = true;
+            }
+            
+            isFirstRender = false;
+            StateHasChanged(); 
+        }
+    }
+
+    private async Task AcceptCookies()
+    {
+        await JS.InvokeVoidAsync("setCookie", "UserCookieConsent", "Accepted", 14);
+        hasUserRespondedToCookieConsent = true;
+    }
+
+    private async Task DeclineCookies()
+    {
+        await JS.InvokeVoidAsync("setCookie", "UserCookieConsent", "Declined", 1);
+        hasUserRespondedToCookieConsent = true;
+    }
+}

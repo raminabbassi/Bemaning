@@ -7,6 +7,7 @@ using StaffingSolution.Data;
 using StaffingSolution.Repositories;
 using StaffingSolution.Services;
 using StaffingSolution.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using StaffingSolution.Controllers;
 
@@ -29,6 +30,13 @@ builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<BookingService>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(24);
+
+    options.SlidingExpiration = false;
+});
 
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

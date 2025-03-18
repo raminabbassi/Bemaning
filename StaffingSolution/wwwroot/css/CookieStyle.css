@@ -1,0 +1,74 @@
+﻿.cookie-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(8px); 
+    z-index: 998; 
+}
+
+.cookie-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; 
+    max-width: 600px; 
+    background-color: rgba(249, 249, 249, 0.95);
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    z-index: 999;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+    .cookie-popup h2 {
+        margin-bottom: 15px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cookie-popup p {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .cookie-popup .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .cookie-popup .accept-button,
+    .cookie-popup .decline-button {
+        padding: 10px 20px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .cookie-popup .accept-button {
+        background-color: #4CAF50; 
+    }
+
+        .cookie-popup .accept-button:hover {
+            background-color: #45a049; 
+        }
+
+    .cookie-popup .decline-button {
+        background-color: #f44336; 
+    }
+
+        .cookie-popup .decline-button:hover {
+            background-color: #e53935; 
+        }

@@ -14,8 +14,8 @@
                 @if (AuthService.IsAdmin())
                 {
                     <li><a href="/admin/dashboard">Statistik</a></li>
-                    <li><a href="/admin/messages">Admin Panel</a></li>
-                    <li><a href="/admin/schedule">Admin schedule</a></li>
+                    <li><a href="/admin/messages">Admin Meddelanden</a></li>
+                    <li><a href="/admin/schedule">Admin schema</a></li>
                 }
                 else
                 {
@@ -28,6 +28,7 @@
 
                 @if (isLoggedIn)
                 {
+                    <li><a href="/BackEndPages/joboverview">Job Översikt</a></li>
                     <li><span>Inloggad som: @loggedInUser</span></li>
                     <li><a class="button" href="/BackEndPages/logout">Logga ut</a></li>
                 }
@@ -48,6 +49,7 @@
 <main>
     @Body
 </main>
+<partial name="_CookieConsentPartial" optional />
 <footer class="footer">
     <div class="container">
         <div class="row">

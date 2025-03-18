@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<_ContentIncludedByDefault Remove="wwwroot\css\CookieStyle.css" />
 		<_ContentIncludedByDefault Remove="wwwroot\css\Home.css" />
 	</ItemGroup>
 

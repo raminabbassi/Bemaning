@@ -17,7 +17,8 @@ namespace StaffingSolution.Pages.BackEndPages
             if (isLoggedIn)
             {
                 Console.WriteLine("Inloggning lyckades!");
-                NavigationManager.NavigateTo("/BackEndPages/joboverview");
+
+                NavigationManager.NavigateTo("/");
             }
             else
             {
