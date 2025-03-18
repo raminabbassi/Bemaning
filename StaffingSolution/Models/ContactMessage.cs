@@ -15,6 +15,8 @@ namespace StaffingSolution.Models
         [Required]
         public string Message { get; set; }
         public bool IsRead { get; set; } = false;
+        public bool Selected { get; set; } = false;
+
 
     }
 }

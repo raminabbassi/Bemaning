@@ -1,0 +1,70 @@
+﻿@page "/admin/reply"
+@using StaffingSolution.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@inject EmailService EmailService
+@inject NavigationManager Navigation
+
+<h3> Svara på meddelande</h3>
+
+@if (string.IsNullOrEmpty(UserEmail))
+{
+    <p class="error-message"> Ingen e-postadress hittades.</p>
+}
+else
+{
+    <EditForm Model="replyModel" OnValidSubmit="SendReply">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="email">Mottagarens e-post:</label>
+            <InputText id="email" @bind-Value="UserEmail" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label for="subject">Ämne:</label>
+            <InputText id="subject" @bind-Value="replyModel.Subject" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="message">Ditt svar:</label>
+            <InputTextArea id="message" @bind-Value="replyModel.Message" class="form-control" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Skicka svar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancel">Avbryt</button>
+    </EditForm>
+}
+
+@code {
+    private ReplyModel replyModel = new();
+    [Parameter] public string UserEmail { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        UserEmail = queryParams["email"] ?? string.Empty;
+    }
+
+    private async Task SendReply()
+    {
+        if (!string.IsNullOrEmpty(UserEmail))
+        {
+            await EmailService.SendEmailAsync(UserEmail, replyModel.Subject, replyModel.Message);
+            Navigation.NavigateTo("/admin/messages");
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/admin/messages");
+    }
+
+    public class ReplyModel
+    {
+        public string Subject { get; set; }
+        public string Message { get; set; }
+    }
+}

@@ -2,6 +2,9 @@
 @using StaffingSolution.Models
 @using StaffingSolution.Repositories
 @using StaffingSolution.Services
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
 @inject ContactRepository ContactRepo
 @inject AuthService AuthService
 @inject NavigationManager Navigation
@@ -23,44 +26,46 @@ else if (messages.Count == 0)
 }
 else
 {
-    <p class="success-message"> Visar @messages.Count meddelanden</p> 
+    <EditForm Model="messageModel" OnValidSubmit="SubmitMarkAsReadAndReply">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <table class="message-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Namn</th>
-                <th>E-post</th>
-                <th>Meddelande</th>
-                <th>Status</th>
-                <th>Åtgärder</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < messages.Count; i++)
-            {
+        <table class="message-table">
+            <thead>
                 <tr>
-                    <td>@messages[i].Id</td>
-                    <td>@messages[i].Name</td>
-                    <td>@messages[i].Email</td>
-                    <td>@messages[i].Message</td>
-                    <td>@(messages[i].IsRead ? " Läst" : " Oläst")</td>
-                    <td>
-                        <button @onclick="() => MarkAsRead(messages[i].Id)">+</button>
-                        <button @onclick="() => DeleteMessage(messages[i].Id)">X</button>
-                    </td>
+                    <th>Välj</th>
+                    <th>ID</th>
+                    <th>Namn</th>
+                    <th>E-post</th>
+                    <th>Meddelande</th>
+                    <th>Status</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var message in messages)
+                {
+                    <tr>
+                        <td>
+                            <InputCheckbox @bind-Value="message.Selected" />
+                        </td>
+                        <td>@message.Id</td>
+                        <td>@message.Name</td>
+                        <td>@message.Email</td>
+                        <td>@message.Message</td>
+                        <td>@(message.IsRead ? "Läst" : "Oläst")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
-
+        <button type="submit" class="btn btn-warning">Markera som läst och svara</button>
+    </EditForm>
 }
-
 
 @code {
     private List<ContactMessage> messages = new();
     private bool IsAdmin = false;
+    private MessageModel messageModel = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,13 +75,13 @@ else
 
             if (!IsAdmin)
             {
-                Navigation.NavigateTo("/Unauthorized"); 
+                Navigation.NavigateTo("/Unauthorized");
+                Console.WriteLine($"Du har inte behörighet till denna sida");
                 return;
             }
 
             messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
-
-            StateHasChanged(); 
+            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -84,33 +89,38 @@ else
         }
     }
 
-
-
-    private async Task MarkAsRead(int messageId)
+    private async Task SubmitMarkAsReadAndReply()
     {
         try
         {
-            await ContactRepo.MarkMessageAsReadAsync(messageId);
-            messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
+            var selectedMessages = messages.Where(m => m.Selected).ToList();
+
+            if (selectedMessages.Any())
+            {
+                foreach (var message in selectedMessages)
+                {
+                    await ContactRepo.MarkMessageAsReadAsync(message.Id);
+
+                    if (!string.IsNullOrEmpty(message.Email))
+                    {
+                        Console.WriteLine($"Navigerar till svarssidan för {message.Email}");
+                        Navigation.NavigateTo($"/admin/reply?email={Uri.EscapeDataString(message.Email)}");
+                        return;
+                    }
+                }
+
+                messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
+                StateHasChanged();
+            }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($" Fel vid uppdatering av meddelande: {ex.Message}");
+            Console.WriteLine($"Fel vid uppdatering av meddelande: {ex.Message}");
         }
     }
 
-    private async Task DeleteMessage(int messageId)
+    public class MessageModel
     {
-        try
-        {
-            await ContactRepo.DeleteMessageAsync(messageId);
-            messages = await ContactRepo.GetAllMessagesAsync() ?? new List<ContactMessage>();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Fel vid radering av meddelande: {ex.Message}");
-        }
+        public HashSet<int> SelectedMessageIds { get; set; } = new();
     }
-
-
 }
