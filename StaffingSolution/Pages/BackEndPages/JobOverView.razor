@@ -4,6 +4,7 @@
 @using StaffingSolution.Models
 @inject IJobApplicationService JobApplicationService
 @inject IAuthService AuthService
+<link href="/css/JobOverView.css" rel="stylesheet" />
 
 <h3>Jobb du har sökt</h3>
 
@@ -26,13 +27,14 @@ else
             @foreach (var job in jobs)
             {
                 <tr>
-                    <td>@job.Title</td>
-                    <td>@job.Company</td>
-                    <td>@job.Status</td>
-                    <td>@job.AppliedDate.ToShortDateString()</td>
+                    <td data-label="Titel">@job.Title</td>
+                    <td data-label="Företag">@job.Company</td>
+                    <td data-label="Status">@job.Status</td>
+                    <td data-label="Ansökningsdatum">@job.AppliedDate.ToShortDateString()</td>
                 </tr>
             }
         </tbody>
     </table>
+
 }
 
