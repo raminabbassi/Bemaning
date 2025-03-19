@@ -27,11 +27,17 @@ namespace StaffingSolution.Services
 
         public async Task AddJobApplication(string title, string company, string userEmail)
         {
-            var newApplication = JobApplicationFactory.Create(title, company, userEmail);
+            var ApplicationModel = new JobApplication
+            {
+                Title = title,
+                Company = company,
+                UserEmail = userEmail,
+                AppliedDate = DateTime.Now,
+                Status = "Mottagen"
+            };
 
-            _context.JobApplications.Add(newApplication);
+            _context.JobApplications.Add(ApplicationModel);
             await _context.SaveChangesAsync();
-
         }
 
         public async Task UpdateJobApplicationStatus(int applicationId, string status)
@@ -49,5 +55,6 @@ namespace StaffingSolution.Services
             int applicationsCount = _context.Applications.Count(a => a.UserId == userId);
             return applicationsCount < 3;
         }
+
     }
 }

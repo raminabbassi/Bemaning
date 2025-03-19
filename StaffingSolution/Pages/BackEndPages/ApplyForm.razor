@@ -1,6 +1,11 @@
 ﻿@page "/BackEndPages/ApplyForm/{jobTitle}"
 @using StaffingSolution.Models
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using StaffingSolution.Services
 @inject StaffingSolution.Controllers.JobController JobController
+
 <link href="/css/ApplyForm.css" rel="stylesheet" />
 
 <h1>Ansök till jobbet: @job.Title</h1>
@@ -20,79 +25,20 @@
 <p class="centered-text">@job.Requirements</p>
 
 
-<form action="/apply" method="post">
-    <input type="hidden" name="jobTitle" value="@job.Title" />
-
-    <label>Har du studerat eller annat arbete på minst 50%?</label>
-    <div class="radio-group">
-        <div>
-            <input type="radio" id="studyingYes" name="isStudying" value="true" />
-            <label for="studyingYes">Ja</label>
-        </div>
-        <div>
-            <input type="radio" id="studyingNo" name="isStudying" value="false" />
-            <label for="studyingNo">Nej</label>
-        </div>
-    </div>
-
-
-    <label>Kan du arbeta heltid under perioden 29/11 till 13/12?</label>
-    <div class="radio-group">
-        <div>
-            <input type="radio" id="workYes" name="canWorkFulltime" value="true" />
-            <label for="workYes">Ja</label>
-        </div>
-        <div>
-            <input type="radio" id="workNo" name="canWorkFulltime" value="false" />
-            <label for="workNo">Nej</label>
-        </div>
-    </div>
-
-
-    <label>Har du B-körkort?</label>
-    <div class="radio-group">
-        <div>
-            <input type="radio" id="licenseYes" name="hasDrivingLicense" value="true" />
-            <label for="licenseYes">Ja</label>
-        </div>
-        <div>
-            <input type="radio" id="licenseNo" name="hasDrivingLicense" value="false" />
-            <label for="licenseNo">Nej</label>
-        </div>
-    </div>
-
-
-    <label>Hur många års erfarenhet har du?</label>
-    <select name="experienceYears">
-        <option value="0">Mindre än 1 år</option>
-        <option value="1">1-3 år</option>
-        <option value="2">3-5 år</option>
-        <option value="3">5 år eller mer</option>
-    </select>
-
-
-    <label>Betygsätt dina svenska kunskaper:</label>
-    <input type="range" name="swedishSkills" min="0" max="10" />
-
-
-    <label for="firstName">Förnamn</label>
-    <input type="text" id="firstName" name="firstName" required />
-
-    <label for="lastName">Efternamn</label>
-    <input type="text" id="lastName" name="lastName" required />
+<EditForm Model="newApplication" OnValidSubmit="SubmitApplication">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <label for="email">E-post</label>
-    <input type="email" id="email" name="email" required />
+    <InputText id="email" @bind-Value="newApplication.UserEmail" class="form-control" required disabled />
 
-    <label for="phone">Telefonnummer</label>
-    <input type="tel" id="phone" name="phone" required />
+    <label for="firstName">Förnamn</label>
+    <InputText id="firstName" @bind-Value="firstName" class="form-control" required />
 
-    <label for="coverLetter">Personligt brev</label>
-    <textarea id="coverLetter" name="coverLetter" required></textarea>
+    <label for="lastName">Efternamn</label>
+    <InputText id="lastName" @bind-Value="lastName" class="form-control" required />
 
-    <label for="cv">Ladda upp ditt CV</label>
-    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" />
+    <button type="submit" class="btn btn-primary">Skicka Ansökan</button>
+</EditForm>
 
-    <button type="submit">Skicka Ansökan</button>
-</form>
 

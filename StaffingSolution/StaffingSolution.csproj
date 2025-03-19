@@ -8,6 +8,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Pages\BackEndPages\Application.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Pages\BackEndPages\Application.razor" />
 		<_ContentIncludedByDefault Remove="wwwroot\css\CookieStyle.css" />
 		<_ContentIncludedByDefault Remove="wwwroot\css\Home.css" />
 	</ItemGroup>
@@ -32,6 +37,14 @@
 
 	<ItemGroup>
 	  <Folder Include="Migartions\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Pages\BackEndPages\Application.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Pages\BackEndPages\CodeBehind\ApplicationPages\Application.razor" />
 	</ItemGroup>
 
 </Project>
