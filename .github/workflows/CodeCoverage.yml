@@ -15,7 +15,7 @@ jobs:
         dotnet-version: '7.0'
 
     - name: Install dependencies
-      run: dotnet restore DtaffingSolution/StaffingSolution.csproj
+      run: dotnet restore StaffingSolution/StaffingSolution.csproj
 
     - name: Install test dependencies
       run: dotnet restore StaffingSolutionTest/StaffingSolutionTest.csproj  
