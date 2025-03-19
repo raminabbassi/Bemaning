@@ -1,0 +1,29 @@
+name: Spell Checker
+
+on: [push, pull_request]
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install codespell
+      run: pip install codespell
+
+    - name: Run codespell
+      run: codespell --ignore-words-list="teh,informations" --skip="*.bin,*.dll,*.exe,*.obj,*.pdb,*.user,*.vscode,./StaffingSolution/wwwroot/css/,./StaffingSolution/Migrations/*" 
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.0'
+
+    - name: Restore dependencies
+      run: dotnet restore
