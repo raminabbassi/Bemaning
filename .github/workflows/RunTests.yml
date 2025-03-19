@@ -1,0 +1,34 @@
+name: .NET Build and Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs: 
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '7.0'
+
+    - name: Restore dependencies for StaffingSolution
+      run: dotnet restore StaffingSolution/StaffingSolution.csproj
+
+    - name: Restore dependencies for StaffingSolutionTest
+      run: dotnet restore StaffingSolutionTest/StaffingSolutionTest.csproj
+
+    - name: Build StaffingSolution
+      run: dotnet build StaffingSolution/StaffingSolution.csproj --no-restore
+
+    - name: Build StaffingSolutionTest
+      run: dotnet build StaffingSolutionTest/StaffingSolutionTest.csproj --no-restore
+
+    - name: Test
+      run: dotnet test StaffingSolutionTest/StaffingSolutionTest.csproj --no-build --verbosity normal
