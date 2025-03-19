@@ -85,6 +85,10 @@ namespace StaffingSolution.Services
             return isAuthenticated ? loggedInEmail : string.Empty;
         }
 
+        public bool IsUser()
+        {
+            return IsLoggedIn() && !IsAdmin();
+        }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
     }

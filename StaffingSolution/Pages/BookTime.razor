@@ -14,6 +14,11 @@
 {
     <p> Inga tillgängliga tider just nu.</p>
 }
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <p class="error-message">@ErrorMessage</p>
+}
+
 else
 {
     <EditForm Model="bookingModel" OnValidSubmit="SubmitBooking">
@@ -42,15 +47,9 @@ else
             </InputSelect>
         </div>
 
-
-        <div class="form-group">
-            <label for="userEmail">Din e-post:</label>
-            <InputText id="userEmail" @bind-Value="bookingModel.UserEmail" class="form-control" />
-            <ValidationMessage For="() => bookingModel.UserEmail" />
-        </div>
-
-        <button type="submit" class="btn btn-primary"> Boka tid</button>
+        <button type="submit" class="btn btn-warning"> Boka tid</button>
     </EditForm>
+
 }
 
 @if (UserBookings != null && UserBookings.Count > 0)
@@ -92,9 +91,14 @@ else
     private BookingModel bookingModel = new BookingModel();
     private int SelectedBookingId { get; set; }
     private Booking SelectedBooking { get; set; } = new();
+    private string UserEmail { get; set; }  
+    public string ErrorMessage { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {
+        UserEmail = AuthService.GetCurrentUserEmail(); 
+        bookingModel.UserEmail = UserEmail; 
+
         AvailableTimes = await BookingService.GetAvailableTimesAsync();
         UserBookings = await BookingService.GetUserBookingsAsync(AuthService.GetCurrentUserEmail());
     }
@@ -103,22 +107,36 @@ else
     {
         if (bookingModel.SelectedSlotId == 0)
         {
-            Console.WriteLine(" Ingen tid vald!");
+            ErrorMessage = "Vänligen välj en tid!";
+            StateHasChanged();
             return;
         }
+
+        var existingBookings = await BookingService.GetUserBookingsAsync(UserEmail);
+        if (existingBookings.Any())
+        {
+            ErrorMessage = "Du har redan en bokad tid och kan inte boka fler.";
+            StateHasChanged();
+            return;
+        }
+
+        bookingModel.UserEmail = UserEmail;
 
         bool success = await BookingService.BookTimeAsync(bookingModel.SelectedSlotId, bookingModel.UserEmail);
         if (success)
         {
             Console.WriteLine(" Bokning lyckades!");
             AvailableTimes = await BookingService.GetAvailableTimesAsync();
-            UserBookings = await BookingService.GetUserBookingsAsync(AuthService.GetCurrentUserEmail());
+            UserBookings = await BookingService.GetUserBookingsAsync(UserEmail);
+            ErrorMessage = "";
         }
         else
         {
-            Console.WriteLine(" Bokningen misslyckades!");
+            ErrorMessage = "Bokningen misslyckades!";
         }
+        StateHasChanged();
     }
+
 
     private async Task CancelSelectedBooking()
     {

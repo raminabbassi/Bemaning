@@ -23,12 +23,14 @@
                     <li><a href="/career">Karriär</a></li>
                     <li><a href="/about">Om Oss</a></li>
                     <li><a href="/contact">Kontakt</a></li>
-                    <li><a href="/book-time">Boka Samtal</a></li>
                 }
-
+                @if (AuthService.IsUser())
+                {
+                    <li><a href="/book-time">Boka Samtal</a></li>
+                    <li><a href="/BackEndPages/joboverview">Job Översikt</a></li>
+                }
                 @if (isLoggedIn)
                 {
-                    <li><a href="/BackEndPages/joboverview">Job Översikt</a></li>
                     <li><span>Inloggad som: @loggedInUser</span></li>
                     <li><a class="button" href="/BackEndPages/logout">Logga ut</a></li>
                 }
@@ -37,6 +39,7 @@
                     <li><a class="button" href="/BackEndPages/Login">Logga in</a></li>
                     <li><a class="button" href="/BackEndPages/Register">Registrera</a></li>
                 }
+
             </ul>
         </nav>
     </header>
