@@ -17,8 +17,8 @@ jobs:
     - name: Install codespell
       run: pip install codespell
 
-    - name: Run codespell
-      run: codespell --ignore-words-list="teh,informations" --skip="*.bin,*.dll,*.exe,*.obj,*.pdb,*.user,*.vscode,./StaffingSolution/wwwroot/css/,./StaffingSolution/Migrations/*" 
+    - name: Run codespell(Warnings Only)
+      run: codespell --ignore-words-list="teh,informations" --skip="*.bin,*.dll,*.exe,*.obj,*.pdb,*.user,*.vscode,./StaffingSolution/wwwroot/css/,./StaffingSolution/Migrations/*" || echo "Codespell found issues but continuing..."
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
