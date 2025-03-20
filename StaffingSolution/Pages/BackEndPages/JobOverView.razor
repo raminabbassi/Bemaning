@@ -23,7 +23,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var job in jobs)
+            @foreach (var job in jobs.OrderByDescending(j => j.AppliedDate))
             {
                 <tr>
                     <td data-label="Titel">@job.Title</td>
@@ -32,6 +32,7 @@ else
                 </tr>
             }
         </tbody>
+
     </table>
 
 }
