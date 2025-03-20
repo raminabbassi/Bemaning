@@ -1,25 +1,9 @@
 ﻿@page "/ApplicationPages/Application"
-@inject NavigationManager Navigation
+<link href="/css/Application.css" rel="stylesheet" />
 
-<h1>Tack för din ansökan!</h1>
-@if (!string.IsNullOrEmpty(email))
-{
-    <p>Vi har mottagit din ansökan och skickat en bekräftelse till <strong>@email</strong>.</p>
-}
-else
-{
+<div class="application-container">
+    <h1> Tack för din ansökan!</h1>
     <p>Vi har mottagit din ansökan och återkommer så snart som möjligt.</p>
-}
 
-<a href="/">Tillbaka till startsidan</a>
-
-@code {
-    [Parameter] public string email { get; set; }
-
-    protected override void OnInitialized()
-    {
-        var uri = new Uri(Navigation.Uri);
-        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-        email = query.Get("email");
-    }
-}
+    <a href="/" class="back-button">Tillbaka till startsidan</a>
+</div>

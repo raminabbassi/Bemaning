@@ -31,16 +31,18 @@ namespace StaffingSolution.Services
 
             await _contactRepository.AddMessageAsync(contactMessage);
 
-            var recipientEmail = _configuration["EmailSettings:RecipientEmail"] ?? "extendly@info.com";
-
+            var recipientEmail = email;
             try
             {
+                Console.WriteLine($" Försöker skicka mejl till: {recipientEmail}");
+
                 await _emailService.SendEmailAsync(
                     recipientEmail,
-                    "Nytt kontaktmeddelande",
-                    $"Namn: {name}<br>E-post: {email}<br><br>Meddelande:<br>{message}"
+                    "Tack för ditt meddelande!",
+                    $"Hej {name},<br><br> Vi har mottagit ditt meddelande och återkommer så snart vi kan.<br><br> Hälsningar, Extendly"
                 );
 
+                Console.WriteLine(" Mejl skickades framgångsrikt!");
                 return "Meddelandet har skickats och sparats!";
             }
             catch (Exception ex)
