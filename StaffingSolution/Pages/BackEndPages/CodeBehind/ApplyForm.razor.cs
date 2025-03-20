@@ -56,9 +56,6 @@ namespace StaffingSolution.Pages.BackEndPages
             Navigation.NavigateTo("/ApplicationPages/Application");
         }
 
-
-
-
         private async Task HandleFileUpload(InputFileChangeEventArgs e)
         {
             var file = e.File;
