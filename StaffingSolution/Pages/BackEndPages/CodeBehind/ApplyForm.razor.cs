@@ -48,7 +48,8 @@ namespace StaffingSolution.Pages.BackEndPages
                 Title = job.Title,
                 Company = "Företagsnamn",
                 UserEmail = AuthService.GetCurrentUserEmail(),
-                AppliedDate = DateTime.Now
+                AppliedDate = DateTime.Now,
+
             };
 
             await JobApplicationService.AddJobApplication(newApplication.Title, newApplication.Company, newApplication.UserEmail);
@@ -56,10 +57,16 @@ namespace StaffingSolution.Pages.BackEndPages
             Navigation.NavigateTo("/ApplicationPages/Application");
         }
 
-        private async Task HandleFileUpload(InputFileChangeEventArgs e)
+        private async Task UploadCv(InputFileChangeEventArgs e)
         {
             var file = e.File;
-            Console.WriteLine($"Uppladdad fil: {file.Name}, Storlek: {file.Size} bytes");
+            if (file != null)
+            {
+                using var ms = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(ms);
+                newApplication.CvFile = ms.ToArray();
+            }
         }
+
     }
 }

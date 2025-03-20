@@ -10,6 +10,7 @@ using StaffingSolution.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using StaffingSolution.Controllers;
+using Microsoft.AspNetCore.Components.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -30,6 +31,7 @@ builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<BookingService>();
+builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = true);
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

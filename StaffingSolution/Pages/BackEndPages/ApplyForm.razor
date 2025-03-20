@@ -25,20 +25,94 @@
 <p class="centered-text">@job.Requirements</p>
 
 
-<EditForm Model="newApplication" OnValidSubmit="SubmitApplication">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+<div class="form-box">
+    <EditForm Model="newApplication" OnValidSubmit="SubmitApplication">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <label for="email">E-post</label>
-    <InputText id="email" @bind-Value="newApplication.UserEmail" class="form-control" required disabled />
+        <label for="firstName">Förnamn</label>
+        <InputText id="firstName" @bind-Value="firstName" class="form-control" required />
 
-    <label for="firstName">Förnamn</label>
-    <InputText id="firstName" @bind-Value="firstName" class="form-control" required />
+        <label for="lastName">Efternamn</label>
+        <InputText id="lastName" @bind-Value="lastName" class="form-control" required />
 
-    <label for="lastName">Efternamn</label>
-    <InputText id="lastName" @bind-Value="lastName" class="form-control" required />
+        <label>Har du studerat eller annat arbete på minst 50%?</label>
+        <InputRadioGroup @bind-Value="newApplication.IsStudying" class="radio-group">
+            <div>
+                <InputRadio Value="true" /> <label for="studyingYes">Ja</label>
+            </div>
+            <div>
+                <InputRadio Value="false" /> <label for="studyingNo">Nej</label>
+            </div>
+        </InputRadioGroup>
 
-    <button type="submit" class="btn btn-primary">Skicka Ansökan</button>
-</EditForm>
+        <label>Kan du arbeta heltid under perioden 29/11 till 13/12?</label>
+        <InputRadioGroup @bind-Value="newApplication.CanWorkFullTime" class="radio-group">
+            <div>
+                <InputRadio Value="true" /> <label for="workYes">Ja</label>
+            </div>
+            <div>
+                <InputRadio Value="false" /> <label for="workNo">Nej</label>
+            </div>
+        </InputRadioGroup>
+
+        <label>Har du B-körkort?</label>
+        <InputRadioGroup @bind-Value="newApplication.HasDrivingLicense" class="radio-group">
+            <div>
+                <InputRadio Value="true" /> <label for="licenseYes">Ja</label>
+            </div>
+            <div>
+                <InputRadio Value="false" /> <label for="licenseNo">Nej</label>
+            </div>
+        </InputRadioGroup>
+
+        <label>Hur många års erfarenhet har du?</label>
+        <InputSelect @bind-Value="newApplication.ExperienceYears" class="form-control">
+            <option value="0">Mindre än 1 år</option>
+            <option value="1">1-3 år</option>
+            <option value="2">3-5 år</option>
+            <option value="3">5 år eller mer</option>
+        </InputSelect>
+
+        <label>Betygsätt dina svenska kunskaper:</label>
+        <input type="range" @bind="newApplication.SwedishSkills" min="0" max="10" class="form-control" />
+
+        <label>Har du arbetat i en liknande roll tidigare?</label>
+        <InputRadioGroup @bind-Value="newApplication.HasPreviousExperience" class="radio-group">
+            <div>
+                <InputRadio Value="true" /> <label for="previousExperienceYes">Ja</label>
+            </div>
+            <div>
+                <InputRadio Value="false" /> <label for="previousExperienceNo">Nej</label>
+            </div>
+        </InputRadioGroup>
+
+        <label>Vilka skift kan du arbeta?</label>
+        <div class="checkbox-group">
+            <div>
+                <InputCheckbox @bind-Value="newApplication.CanWorkMorning" />
+                <label for="morningShift">Morgon</label>
+            </div>
+            <div>
+                <InputCheckbox @bind-Value="newApplication.CanWorkEvening" />
+                <label for="eveningShift">Kväll</label>
+            </div>
+            <div>
+                <InputCheckbox @bind-Value="newApplication.CanWorkNight" />
+                <label for="nightShift">Natt</label>
+            </div>
+        </div>
+
+        <label>Berätta kort om dig själv:</label>
+        <InputTextArea @bind-Value="newApplication.PersonalStatement" class="form-control" rows="4" />
+
+        <label>Ladda upp ditt CV:</label>
+        <InputFile OnChange="UploadCv" class="form-control" />
+
+        <button type="submit">Skicka Ansökan</button>
+    </EditForm>
+</div>
+
+
 
 
