@@ -19,7 +19,7 @@ namespace StaffingSolution.Services
             _logger = logger;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public virtual async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             _logger.LogInformation(" Förbereder att skicka mejl till: {Email}", email);
 

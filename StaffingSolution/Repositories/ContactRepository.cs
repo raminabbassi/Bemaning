@@ -14,7 +14,7 @@ namespace StaffingSolution.Repositories
             _context = context;
         }
 
-        public async Task AddMessageAsync(ContactMessage message)
+        public async Task AddMessageAsync(ContactMessage message)  
         {
             _context.ContactMessages.Add(message);
             await _context.SaveChangesAsync();
