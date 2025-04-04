@@ -24,11 +24,10 @@ jobs:
                   > spellcheck_report.txt || echo "Codespell found issues but continuing..."
 
     - name: Upload spellcheck report as artifact
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v2
       with:
         name: spellcheck-report
         path: spellcheck_report.txt
-
 
     - name: Restore dependencies
       run: dotnet restore
