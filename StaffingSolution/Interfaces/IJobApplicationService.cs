@@ -8,6 +8,7 @@ namespace StaffingSolution.Interfaces
         Task UpdateJobApplicationStatus(int applicationId, string status);
         Task AddJobApplication(string title, string company, string userEmail);
         bool CanApplyForJob(string userId);
+        Task MarkExpiredApplicationsAsync();
 
     }
 }

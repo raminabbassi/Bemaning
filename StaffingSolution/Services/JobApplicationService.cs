@@ -55,6 +55,18 @@ namespace StaffingSolution.Services
             int applicationsCount = _context.Applications.Count(a => a.UserId == userId);
             return applicationsCount < 3;
         }
+        public async Task MarkExpiredApplicationsAsync()
+        {
+            var expiredApps = await _context.JobApplications
+                .Where(a => a.Status == "Pending" && a.AppliedDate < DateTime.UtcNow.AddDays(-30))
+                .ToListAsync();
 
+            foreach (var app in expiredApps)
+            {
+                app.Status = "Expired";
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -17,11 +17,11 @@ namespace StaffingSolution.Tests
         public JobApplicationServiceTests()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
-               .UseInMemoryDatabase(databaseName: System.Guid.NewGuid().ToString()) 
+               .UseInMemoryDatabase(databaseName: System.Guid.NewGuid().ToString())
                .Options;
 
             _context = new AppDbContext(options);
-            _service = new JobApplicationService(_context); 
+            _service = new JobApplicationService(_context);
 
             _context.JobApplications.AddRange(new List<JobApplication>
             {
@@ -32,7 +32,7 @@ namespace StaffingSolution.Tests
                     Title = "Developer",
                     Company = "Tech Corp",
                     Status = "Pending",
-                    AppliedDate = System.DateTime.UtcNow
+                    AppliedDate = System.DateTime.UtcNow.AddDays(-31)
                 },
                 new JobApplication
                 {
@@ -40,10 +40,20 @@ namespace StaffingSolution.Tests
                     UserEmail = "user2@example.com",
                     Title = "Tester",
                     Company = "Quality Inc",
-                    Status = "Completed",
-                    AppliedDate = System.DateTime.UtcNow
+                    Status = "Pending",
+                    AppliedDate = System.DateTime.UtcNow.AddDays(-10)
+                },
+                new JobApplication
+                {
+                    Id = 3,
+                    UserEmail = "user3@example.com",
+                    Title = "Designer",
+                    Company = "Creative AB",
+                    Status = "Approved",
+                    AppliedDate = System.DateTime.UtcNow.AddDays(-40)
                 }
             });
+
             _context.SaveChanges();
         }
 
@@ -62,7 +72,7 @@ namespace StaffingSolution.Tests
         {
             var title = "Manager";
             var company = "Leadership Ltd";
-            var userEmail = "user3@example.com";
+            var userEmail = "user4@example.com";
 
             await _service.AddJobApplication(title, company, userEmail);
 
@@ -79,6 +89,20 @@ namespace StaffingSolution.Tests
             var updatedApplication = _context.JobApplications.FirstOrDefault(j => j.Id == 1);
             Assert.NotNull(updatedApplication);
             Assert.Equal("Approved", updatedApplication.Status);
+        }
+
+        [Fact]
+        public async Task MarkExpiredApplicationsAsync_ShouldSetOldPendingToExpired()
+        {
+            await _service.MarkExpiredApplicationsAsync();
+
+            var app1 = await _context.JobApplications.FindAsync(1);
+            var app2 = await _context.JobApplications.FindAsync(2);
+            var app3 = await _context.JobApplications.FindAsync(3);
+
+            Assert.Equal("Expired", app1.Status); 
+            Assert.Equal("Pending", app2.Status); 
+            Assert.Equal("Approved", app3.Status); 
         }
     }
 }
