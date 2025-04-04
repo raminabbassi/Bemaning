@@ -19,13 +19,16 @@ jobs:
 
     - name: Run codespell and save output to file
       run: |
-        codespell --ignore-words-list="teh,informations" --skip="*.bin,*.dll,*.exe,*.obj,*.pdb,*.user,*.vscode,./StaffingSolution/wwwroot/css/,./StaffingSolution/Migrations/*" > spellcheck_report.txt || echo "Codespell found issues but continuing..."
+        codespell --ignore-words-list="teh,informations" \
+                  --skip="*.bin,*.dll,*.exe,*.obj,*.pdb,*.user,*.vscode,./StaffingSolution/wwwroot/css/,./StaffingSolution/Migrations/*" \
+                  > spellcheck_report.txt || echo "Codespell found issues but continuing..."
 
     - name: Upload spellcheck report as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: spellcheck-report
         path: spellcheck_report.txt
+
 
     - name: Restore dependencies
       run: dotnet restore
