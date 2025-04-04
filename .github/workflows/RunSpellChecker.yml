@@ -24,7 +24,7 @@ jobs:
                   > spellcheck_report.txt || echo "Codespell found issues but continuing..."
 
     - name: Upload spellcheck report as artifact
-      uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v2.2.4
       with:
         name: spellcheck-report
         path: spellcheck_report.txt
