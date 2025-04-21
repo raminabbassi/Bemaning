@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StaffingSolution.Data;
 using StaffingSolution.Models;
-
+using StaffingSolution.Interfaces;
 namespace StaffingSolution.Services
 {
-    public class BookingService
+    public class BookingService : IBookingService
     {
         private readonly AppDbContext _context;
         private readonly EmailService _emailService;
@@ -16,7 +16,7 @@ namespace StaffingSolution.Services
         public BookingService(AppDbContext context, EmailService emailService)
         {
             _context = context;
-            _emailService = emailService; 
+            _emailService = emailService;
         }
 
         public async Task<bool> BookTimeAsync(int scheduleId, string userEmail)
