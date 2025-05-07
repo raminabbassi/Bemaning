@@ -1,0 +1,57 @@
+﻿@page "/jobbbanken"
+@inject JobTechService JobTechService
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations
+@using StaffingSolution.Models
+<link href="/css/JobbBanken.css" rel="stylesheet" />
+
+<h1>SENASTE JOBBANNONSERNA</h1>
+
+<EditForm Model="this" OnValidSubmit="SearchJobs">
+    <div class="search-panel">
+        <InputText @bind-Value="searchTerm" placeholder="Sök jobb..." class="form-control" />
+        <button type="submit" class="btn btn-warning">Sök</button>
+    </div>
+</EditForm>
+
+
+@if (jobAds == null)
+{
+    <p>Laddar jobbannonser...</p>
+}
+else if (jobAds.Count == 0)
+{
+    <p>Inga annonser hittades.</p>
+}
+else
+{
+    <div class="job-cards">
+        @foreach (var job in jobAds)
+        {
+            <a href="@job.WebpageUrl" target="_blank" class="job-card">
+                <img src="jobbBankenImages/arbetsförmedlingen.png" alt="Jobbikon" class="job-icon" />
+                <h3>@job.Headline</h3>
+                <p><strong>@job.Workplace</strong></p>
+                <p>@job.DescriptionText</p>
+            </a>
+        }
+    </div>
+
+}
+
+
+@code {
+    private List<JobAdDto> jobAds;
+    private string searchTerm = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        jobAds = await JobTechService.SearchJobsAsync("", 100); 
+    }
+
+    private async Task SearchJobs()
+    {
+        jobAds = await JobTechService.SearchJobsAsync(searchTerm, 100);
+    }
+}

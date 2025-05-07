@@ -1,0 +1,54 @@
+﻿.job-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.job-card {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: black;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .job-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .job-card h3 {
+        margin-top: 0;
+        font-size: 20px;
+        color: white;
+    }
+
+.job-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+
+.search-panel button {
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.search-panel input,
+.search-panel button {
+    align-self: center;
+}
+
+
+input.form-control {
+    width: 300px;
+    padding: 8px;
+    font-size: 16px;
+}
+

@@ -20,7 +20,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<JobController>();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=RPABLO;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddScoped<AuthService>();
@@ -31,6 +31,7 @@ builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<BookingService>();
+builder.Services.AddHttpClient<JobTechService>();
 builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = true);
 
 builder.Services.ConfigureApplicationCookie(options =>
