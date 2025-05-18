@@ -20,7 +20,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddScoped<JobController>();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=RAMIN\\SQLEXPRESS;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=RPABLO;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
 builder.Services.AddScoped<AuthService>();

@@ -3,10 +3,11 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using StaffingSolution.Interfaces;
 
 namespace StaffingSolution.Services
 {
-    public class EmailService
+    public class EmailService : IEmailService
     {
         private readonly string _smtpServer = "smtp.gmail.com";
         private readonly int _smtpPort = 587;

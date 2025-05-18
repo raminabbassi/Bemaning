@@ -7,7 +7,7 @@ using StaffingSolution.Data;
 using StaffingSolution.Models;
 using StaffingSolution.Services;
 
-public class ScheduleService
+public class ScheduleService : IScheduleService
 {
     private readonly AppDbContext _context;
     private readonly EmailService _emailService;

@@ -19,8 +19,6 @@
                 }
                 else
                 {
-                    <li><a href="/jobsearch">Lediga Tjänster</a></li>
-                    <li><a href="/jobbbanken">Jobb Banken</a></li>
                     <li><a href="/career">Karriär</a></li>
                     <li><a href="/about">Om Oss</a></li>
                     <li><a href="/contact">Kontakt</a></li>
@@ -28,6 +26,8 @@
                 }
                 @if (AuthService.IsUser())
                 {
+                    <li><a href="/jobsearch">Lediga Tjänster</a></li>
+                    <li><a href="/jobbbanken">Jobb Banken</a></li>
                     <li><a href="/book-time">Boka Samtal</a></li>
                     <li><a href="/BackEndPages/joboverview">Job Översikt</a></li>
                 }
