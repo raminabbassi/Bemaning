@@ -1,11 +1,12 @@
 ﻿@page "/book-time"
+@using StaffingSolution.Interfaces
 @using StaffingSolution.Models
 @using StaffingSolution.Services
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components
 @using System.ComponentModel.DataAnnotations
 @inject BookingService BookingService
-@inject AuthService AuthService
+@inject IAuthService AuthService
 @inject NavigationManager Navigation
 
 <h3> Boka en tid</h3>
