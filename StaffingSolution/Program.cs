@@ -31,7 +31,7 @@ builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<BookingService>();
-builder.Services.AddHttpClient<JobTechService>();
+builder.Services.AddHttpClient<IJobTechService, JobTechService>();
 builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = true);
 
 builder.Services.ConfigureApplicationCookie(options =>

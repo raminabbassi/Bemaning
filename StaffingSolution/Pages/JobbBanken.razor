@@ -1,5 +1,5 @@
 ﻿@page "/jobbbanken"
-@inject JobTechService JobTechService
+@inject IJobTechService JobTechService
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components
 @using System.ComponentModel.DataAnnotations
@@ -32,8 +32,9 @@ else
             <a href="@job.WebpageUrl" target="_blank" class="job-card">
                 <img src="jobbBankenImages/arbetsförmedlingen.png" alt="Jobbikon" class="job-icon" />
                 <h3>@job.Headline</h3>
-                <p><strong>@job.Workplace</strong></p>
-                <p>@job.DescriptionText</p>
+
+                <p>@job.location</p>
+
             </a>
         }
     </div>
