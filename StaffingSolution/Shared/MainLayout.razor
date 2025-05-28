@@ -1,7 +1,8 @@
 ﻿@using StaffingSolution.Services
+@using StaffingSolution.Pages.BackEndPages
+
 @inherits LayoutComponentBase
 @inject AuthService AuthService
-
 <div class="main-layout">
     <header>
         <a href="/" class="logo-link">
@@ -55,6 +56,7 @@
     @Body
 </main>
 <partial name="_CookieConsentPartial" optional />
+
 <footer class="footer">
     <div class="container">
         <div class="row">
@@ -89,6 +91,8 @@
         <p class="footer-bottom-text">&copy; 2024 Extendly</p>
     </div>
 </footer>
+
+<ChatBot />
 
 @code {
     private bool isLoggedIn;

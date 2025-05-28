@@ -26,7 +26,7 @@ public class ScheduleService : IScheduleService
             .ToListAsync();
     }
 
-    public async Task AddAvailabilityAsync(string adminEmail, DateTime startTime, DateTime endTime)
+    public async Task AddAvailabilityAsync(string adminEmail, DateTime startTime, DateTime endTime)//skapa lediga tider 
     {
         var schedule = new AdminSchedule
         {
@@ -40,7 +40,7 @@ public class ScheduleService : IScheduleService
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveSlotAsync(int slotId)
+    public async Task RemoveSlotAsync(int slotId)//tar bort tid från schemat 
     {
         var slot = await _context.AdminSchedules.FindAsync(slotId);
 

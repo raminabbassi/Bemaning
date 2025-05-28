@@ -32,6 +32,9 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<BookingService>();
 builder.Services.AddHttpClient<IJobTechService, JobTechService>();
+builder.Services.Configure<OpenAISettings>(builder.Configuration.GetSection("OpenAI"));
+builder.Services.AddScoped<OpenAiChatService>();
+
 builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = true);
 
 builder.Services.ConfigureApplicationCookie(options =>
