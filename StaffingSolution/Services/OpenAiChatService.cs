@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using StaffingSolution.Models;
 
 public class OpenAiChatService
@@ -10,11 +11,10 @@ public class OpenAiChatService
     private readonly HttpClient _http;
     private readonly string _apiKey; 
 
-    public OpenAiChatService(HttpClient http)
+    public OpenAiChatService(HttpClient http, IOptions<OpenAISettings> options)
     {
         _http = http;
-        _apiKey = "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";
-
+        _apiKey = options?.Value?.ApiKey ?? throw new ArgumentNullException("API-nyckel saknas");
     }
 
 
@@ -27,7 +27,9 @@ public class OpenAiChatService
                 model = "gpt-3.5-turbo",
                 messages = new[]
                 {
-                new { role = "system", content = "Du är en hjälpsam svensk chatbot för en webbsida som heter Extendly. Svara på frågor om hur man söker jobb, bokar samtal, skapar konto och använder hemsidan. Hemsidan har sektioner som 'Jobbannonser', 'Jobbbanken', 'Boka Samtal' och 'Registrera'. Du ska svara på ett enkelt och tydligt sätt, helst på svenska. Du ska inte hitta på data som inte finns. Om du inte vet, säg ärligt att du inte vet." },
+                new { role = "system", content = "Du är en hjälpsam svensk chatbot för en webbsida som heter Extendly.  Svara på frågor om hur man söker jobb, bokar samtal, skapar konto och använder hemsidan." +
+                " Hemsidan har sektioner som 'Lediga tjänster', 'Jobbbanken', 'Boka Samtal' och 'Registrera'." +
+                " Du ska svara på ett enkelt och tydligt sätt, helst på svenska. Du ska inte hitta på data som inte finns. Om du inte vet, säg ärligt att du inte vet. Du ska svara på frågor nör man är inloggad på hemsidan." },
                 new { role = "user", content = userQuestion }
             }
             };
