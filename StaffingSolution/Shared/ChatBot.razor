@@ -1,26 +1,30 @@
-﻿@page "/BackEndPages/ChatBot"
-@using StaffingSolution.Services
+﻿@using StaffingSolution.Services
 @using StaffingSolution.Models
 @using Microsoft.AspNetCore.Components.Forms
 @inject OpenAiChatService OpenAiBot
+<link href="/css/ChatBot.css" rel="stylesheet" />
 
-<h4>Ställ en fråga till hemsidan</h4>
+<div class="chatbot-floating">
+        <div class="chat-popup">
+            <h5>Ställ en fråga till hemsidan</h5>
 
-<EditForm Model="chatModel" OnValidSubmit="SendQuestion">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+            <EditForm Model="chatModel" OnValidSubmit="SendQuestion">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-    <div class="mb-2">
-        <InputText @bind-Value="chatModel.Question" class="form-control" placeholder="Skriv din fråga..." />
-    </div>
+                <div class="mb-2">
+                    <InputText @bind-Value="chatModel.Question" class="form-control" placeholder="Skriv din fråga..." />
+                </div>
 
-    <button type="submit" class="btn btn-primary">Skicka</button>
-</EditForm>
+                <button type="submit" class="btn btn-primary">Fråga</button>
+            </EditForm>
 
-@if (!string.IsNullOrEmpty(botAnswer))
-{
-    <p class="mt-3"><strong>Bot:</strong> @botAnswer</p>
-}
+            @if (!string.IsNullOrEmpty(botAnswer))
+            {
+                <p class="mt-3"><strong>Bot:</strong> @botAnswer</p>
+            }
+        </div>
+</div>
 
 @code {
     private ChatBotModel chatModel = new();

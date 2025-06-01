@@ -31,11 +31,13 @@
                     <li><a href="/jobbbanken">Jobb Banken</a></li>
                     <li><a href="/book-time">Boka Samtal</a></li>
                     <li><a href="/BackEndPages/joboverview">Job Översikt</a></li>
+
                 }
                 @if (isLoggedIn)
                 {
                     <li><span>Inloggad som: @loggedInUser</span></li>
                     <li><a class="button" href="/BackEndPages/logout">Logga ut</a></li>
+
                 }
                 else
                 {
@@ -55,6 +57,12 @@
 <main>
     @Body
 </main>
+@if (AuthService.IsUser())
+{
+    <ChatBot />
+
+}
+
 <partial name="_CookieConsentPartial" optional />
 
 <footer class="footer">
@@ -92,7 +100,6 @@
     </div>
 </footer>
 
-<ChatBot />
 
 @code {
     private bool isLoggedIn;

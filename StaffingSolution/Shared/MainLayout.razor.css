@@ -94,19 +94,3 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
-/*.chatbot-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999;
-}
-
-.chatbot-box {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 12px;
-    width: 250px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.2);
-}
-*/
