@@ -21,6 +21,9 @@ namespace StaffingSolution.Services
 
         public async Task<bool> BookTimeAsync(int scheduleId, string userEmail)
         {
+            if (string.IsNullOrWhiteSpace(userEmail))
+                throw new ArgumentException("E-postadress får inte vara tom.", nameof(userEmail));
+
             var schedule = await _context.AdminSchedules.FindAsync(scheduleId);
 
             if (schedule == null || schedule.IsBooked)
@@ -43,6 +46,7 @@ namespace StaffingSolution.Services
 
             return true;
         }
+
 
         public async Task<List<Booking>> GetUserBookingsAsync(string userEmail)
         {

@@ -1,11 +1,12 @@
 ﻿@page "/admin/schedule"
+@using StaffingSolution.Interfaces
 @using StaffingSolution.Services
 @using StaffingSolution.Models
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components
 @using System.ComponentModel.DataAnnotations
 @inject ScheduleService ScheduleService
-@inject AuthService AuthService
+@inject IAuthService AuthService
 @inject NavigationManager Navigation
 
 <h3> Admin Schema</h3>

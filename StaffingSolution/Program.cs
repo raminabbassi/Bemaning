@@ -23,7 +23,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=RPABLO;Database=Bemaning;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobApplicationService, JobApplicationService>();
-builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ContactRepository>();
 builder.Services.AddScoped<ContactService>();

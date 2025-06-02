@@ -12,7 +12,7 @@ namespace StaffingSolution.Services
         private readonly string _smtpServer = "smtp.gmail.com";
         private readonly int _smtpPort = 587;
         private readonly string _smtpUsername = "raminabbassi88@gmail.com";
-        private readonly string _smtpPassword = "kqoo dehn epfa ifkl";
+        private readonly string _smtpPassword = "ttad iixt sudt emfk";
         private readonly ILogger<EmailService> _logger;
 
         public EmailService(ILogger<EmailService> logger)
@@ -22,6 +22,12 @@ namespace StaffingSolution.Services
 
         public virtual async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                _logger.LogWarning(" Försök att skicka mejl utan e-postadress.");
+                throw new ArgumentException("E-postadress får inte vara tom.", nameof(email));
+            }
+
             _logger.LogInformation(" Förbereder att skicka mejl till: {Email}", email);
 
             try
@@ -51,5 +57,6 @@ namespace StaffingSolution.Services
                 throw;
             }
         }
+
     }
 }

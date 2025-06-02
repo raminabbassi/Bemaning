@@ -1,9 +1,10 @@
 ﻿@page "/BackEndPages/Login"
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components
+@using StaffingSolution.Interfaces
 @using StaffingSolution.Services
 @using System.ComponentModel.DataAnnotations
-@inject AuthService AuthService
+@inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
 <link href="/css/Login.css" rel="stylesheet" />

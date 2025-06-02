@@ -1,8 +1,9 @@
-﻿@using StaffingSolution.Services
+﻿@using StaffingSolution.Interfaces
+@using StaffingSolution.Services
 @using StaffingSolution.Pages.BackEndPages
 
 @inherits LayoutComponentBase
-@inject AuthService AuthService
+@inject IAuthService AuthService
 <div class="main-layout">
     <header>
         <a href="/" class="logo-link">

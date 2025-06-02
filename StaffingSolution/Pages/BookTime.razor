@@ -9,107 +9,118 @@
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 
-<h3> Boka en tid</h3>
+<h3>Boka en tid</h3>
 
-@if (AvailableTimes == null || AvailableTimes.Count == 0)
-{
-    <p> Inga tillgängliga tider just nu.</p>
-}
-@if (!string.IsNullOrEmpty(ErrorMessage))
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
 {
     <p class="error-message">@ErrorMessage</p>
 }
 
-else
+@if (!IsLoggedIn)
 {
-    <EditForm Model="bookingModel" OnValidSubmit="SubmitBooking">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
-        <div class="form-group">
-            <label for="selectedSlot">Välj en tillgänglig tid:</label>
-            <InputSelect id="selectedSlot" @bind-Value="bookingModel.SelectedSlotId" class="form-control">
-                <option value="">-- Välj en tid --</option>
-                @foreach (var slot in AvailableTimes)
-                {
-                    if (slot.IsBooked)
-                    {
-                        <option value="@slot.Id" disabled>
-                            @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm") (Bokad)
-                        </option>
-                    }
-                    else
-                    {
-                        <option value="@slot.Id">
-                            @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm")
-                        </option>
-                    }
-                }
-            </InputSelect>
-        </div>
-
-        <button type="submit" class="btn btn-warning"> Boka tid</button>
-    </EditForm>
-
-}
-
-@if (UserBookings != null && UserBookings.Count > 0)
-{
-    <h4> Dina bokade tider</h4>
-    <EditForm Model="SelectedBooking" OnValidSubmit="CancelSelectedBooking">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-
-        <div class="form-group">
-            <label for="bookingSelect">Välj en bokad tid:</label>
-            <InputSelect id="bookingSelect" @bind-Value="SelectedBookingId" class="form-control">
-                <option value="">-- Välj en bokad tid --</option>
-                @foreach (var booking in UserBookings)
-                {
-                    if (booking.Schedule != null)
-                    {
-                        <option value="@booking.Id">
-                            @($"{booking.BookedTime:yyyy-MM-dd HH:mm} - {booking.Schedule.EndTime:HH:mm}")
-                        </option>
-                    }
-                }
-            </InputSelect>
-        </div>
-
-        <button type="submit" class="btn btn-warning"> Avboka</button>
-    </EditForm>
+    <p>Du måste vara inloggad för att boka en tid.</p>
 }
 else
 {
-    <p>Inga bokade tider hittades.</p>
+    if (AvailableTimes == null || AvailableTimes.Count == 0)
+    {
+        <p>Inga tillgängliga tider just nu.</p>
+    }
+    else
+    {
+        <EditForm Model="bookingModel" OnValidSubmit="SubmitBooking">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="selectedSlot">Välj en tillgänglig tid:</label>
+                <InputSelect id="selectedSlot" @bind-Value="bookingModel.SelectedSlotId" class="form-control">
+                    <option value="">-- Välj en tid --</option>
+                    @foreach (var slot in AvailableTimes)
+                    {
+                        if (slot.IsBooked)
+                        {
+                            <option value="@slot.Id" disabled>
+                                @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm") (Bokad)
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@slot.Id">
+                                @slot.StartTime.ToString("yyyy-MM-dd HH:mm") - @slot.EndTime.ToString("HH:mm")
+                            </option>
+                        }
+                    }
+                </InputSelect>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Boka tid</button>
+        </EditForm>
+    }
+
+    if (UserBookings != null && UserBookings.Count > 0)
+    {
+        <h4>Dina bokade tider</h4>
+        <EditForm Model="SelectedBooking" OnValidSubmit="CancelSelectedBooking">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="bookingSelect">Välj en bokad tid:</label>
+                <InputSelect id="bookingSelect" @bind-Value="SelectedBookingId" class="form-control">
+                    <option value="">-- Välj en bokad tid --</option>
+                    @foreach (var booking in UserBookings)
+                    {
+                        if (booking.Schedule != null)
+                        {
+                            <option value="@booking.Id">
+                                @($"{booking.BookedTime:yyyy-MM-dd HH:mm} - {booking.Schedule.EndTime:HH:mm}")
+                            </option>
+                        }
+                    }
+                </InputSelect>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Avboka</button>
+        </EditForm>
+    }
+    else
+    {
+        <p>Inga bokade tider hittades.</p>
+    }
 }
-
-
 
 @code {
     private List<AdminSchedule> AvailableTimes = new();
     private List<Booking> UserBookings = new();
-    private BookingModel bookingModel = new BookingModel();
+    private BookingModel bookingModel = new();
     private int SelectedBookingId { get; set; }
     private Booking SelectedBooking { get; set; } = new();
-    private string UserEmail { get; set; }  
+    private string UserEmail { get; set; } = string.Empty;
     public string ErrorMessage { get; set; } = "";
+    private bool IsLoggedIn { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
-        UserEmail = AuthService.GetCurrentUserEmail(); 
-        bookingModel.UserEmail = UserEmail; 
+        UserEmail = AuthService.GetCurrentUserEmail();
+        IsLoggedIn = !string.IsNullOrWhiteSpace(UserEmail);
 
+        bookingModel.UserEmail = UserEmail;
         AvailableTimes = await BookingService.GetAvailableTimesAsync();
-        UserBookings = await BookingService.GetUserBookingsAsync(AuthService.GetCurrentUserEmail());
+        UserBookings = await BookingService.GetUserBookingsAsync(UserEmail);
     }
 
     private async Task SubmitBooking()
     {
+        if (!IsLoggedIn || string.IsNullOrWhiteSpace(UserEmail))
+        {
+            ErrorMessage = "Du måste vara inloggad för att boka en tid.";
+            return;
+        }
+
         if (bookingModel.SelectedSlotId == 0)
         {
             ErrorMessage = "Vänligen välj en tid!";
-            StateHasChanged();
             return;
         }
 
@@ -117,16 +128,12 @@ else
         if (existingBookings.Any())
         {
             ErrorMessage = "Du har redan en bokad tid och kan inte boka fler.";
-            StateHasChanged();
             return;
         }
 
-        bookingModel.UserEmail = UserEmail;
-
-        bool success = await BookingService.BookTimeAsync(bookingModel.SelectedSlotId, bookingModel.UserEmail);
+        bool success = await BookingService.BookTimeAsync(bookingModel.SelectedSlotId, UserEmail);
         if (success)
         {
-            Console.WriteLine(" Bokning lyckades!");
             AvailableTimes = await BookingService.GetAvailableTimesAsync();
             UserBookings = await BookingService.GetUserBookingsAsync(UserEmail);
             ErrorMessage = "";
@@ -135,23 +142,21 @@ else
         {
             ErrorMessage = "Bokningen misslyckades!";
         }
-        StateHasChanged();
     }
-
 
     private async Task CancelSelectedBooking()
     {
         if (SelectedBookingId > 0)
         {
             await BookingService.CancelBookingAsync(SelectedBookingId);
-            UserBookings = await BookingService.GetUserBookingsAsync(bookingModel.UserEmail);
-            SelectedBookingId = 0; 
+            UserBookings = await BookingService.GetUserBookingsAsync(UserEmail);
+            SelectedBookingId = 0;
         }
     }
 
     public class BookingModel
     {
         public int SelectedSlotId { get; set; }
-        public string UserEmail { get; set; } 
+        public string UserEmail { get; set; }
     }
 }

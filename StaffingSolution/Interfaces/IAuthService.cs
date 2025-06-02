@@ -8,6 +8,8 @@
         bool IsLoggedIn();
         string GetLoggedInUser();
         string GetCurrentUserEmail();
+        bool IsAdmin();
+        bool IsUser();
         event Action OnChange;
     }
 }
