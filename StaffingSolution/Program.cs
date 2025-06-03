@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 using StaffingSolution.Controllers;
 using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -35,6 +36,7 @@ builder.Services.AddOptions();
 builder.Services.Configure<OpenAISettings>(
     builder.Configuration.GetSection("OpenAISettings"));
 builder.Services.AddHttpClient<OpenAiChatService>();
+builder.Services.AddScoped<ProtectedLocalStorage>();
 
 
 builder.Services.Configure<CircuitOptions>(options => options.DetailedErrors = true);

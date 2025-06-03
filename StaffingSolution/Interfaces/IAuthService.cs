@@ -2,14 +2,15 @@
 {
     public interface IAuthService
     {
-        bool Login(string email, string password);
-        void Logout();
+        Task<bool> LoginAsync(string email, string password); void Logout();
         void Register(string email, string password);
         bool IsLoggedIn();
         string GetLoggedInUser();
         string GetCurrentUserEmail();
         bool IsAdmin();
         bool IsUser();
+        Task InitializeAsync(); 
+
         event Action OnChange;
     }
 }

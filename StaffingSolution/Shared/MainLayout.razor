@@ -105,11 +105,20 @@
 @code {
     private bool isLoggedIn;
     private string loggedInUser;
+    private bool _initialized = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        UpdateLoginState();
-        AuthService.OnChange += HandleAuthStateChange;
+        if (firstRender && !_initialized)
+        {
+            _initialized = true;
+
+            await AuthService.InitializeAsync(); 
+            UpdateLoginState();
+            AuthService.OnChange += HandleAuthStateChange;
+
+            StateHasChanged(); 
+        }
     }
 
     private void HandleAuthStateChange()

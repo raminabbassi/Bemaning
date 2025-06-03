@@ -4,6 +4,7 @@ using StaffingSolution.Models;
 using StaffingSolution.Repositories;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace StaffingSolution.Services
 {
@@ -11,20 +12,23 @@ namespace StaffingSolution.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ProtectedLocalStorage _localStorage;
 
         public event Action OnChange;
 
         private bool isAuthenticated = false;
         private string loggedInEmail = string.Empty;
 
-        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public AuthService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor, ProtectedLocalStorage localStorage)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
-        }
-        private bool isAdmin = false; 
+            _localStorage = localStorage;
 
-        public bool Login(string email, string password)
+        }
+        private bool isAdmin = false;
+
+        public async Task<bool> LoginAsync(string email, string password)
         {
             var user = _userRepository.GetByEmail(email);
             isAuthenticated = user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
@@ -32,7 +36,10 @@ namespace StaffingSolution.Services
             if (isAuthenticated)
             {
                 loggedInEmail = email;
-                isAdmin = user.IsAdmin; 
+                isAdmin = user.IsAdmin;
+
+                await _localStorage.SetAsync("userEmail", email);
+
                 NotifyStateChanged();
                 Console.WriteLine($"Nu är du inloggad. Admin: {isAdmin}");
             }
@@ -43,6 +50,7 @@ namespace StaffingSolution.Services
 
             return isAuthenticated;
         }
+
 
         public bool IsAdmin()
         {
@@ -70,6 +78,20 @@ namespace StaffingSolution.Services
             var emailService = _httpContextAccessor.HttpContext.RequestServices.GetService<EmailService>();
             _ = emailService.SendEmailAsync(email, "Välkommen till Bemaning!",
                 $"Hej!<br><br> Du har nu registrerat dig på vår plattform.<br><br> Mvh, Extendly");
+        }
+        public async Task InitializeAsync()
+        {
+            var result = await _localStorage.GetAsync<string>("userEmail");
+            if (result.Success && !string.IsNullOrWhiteSpace(result.Value))
+            {
+                loggedInEmail = result.Value;
+                isAuthenticated = true;
+
+                var user = _userRepository.GetByEmail(loggedInEmail);
+                isAdmin = user?.IsAdmin ?? false;
+
+                NotifyStateChanged();
+            }
         }
 
         public bool IsLoggedIn()

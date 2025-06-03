@@ -13,7 +13,7 @@ namespace StaffingSolution.Pages.BackEndPages
         {
             ErrorMessage = string.Empty;
 
-            var isLoggedIn = AuthService.Login(loginModel.Email, loginModel.Password);
+            var isLoggedIn = await AuthService.LoginAsync(loginModel.Email, loginModel.Password);
             if (isLoggedIn)
             {
                 Console.WriteLine("Inloggning lyckades!");
