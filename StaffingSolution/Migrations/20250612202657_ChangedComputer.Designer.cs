@@ -12,8 +12,8 @@ using StaffingSolution.Data;
 namespace StaffingSolution.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250317023309_booking")]
-    partial class booking
+    [Migration("20250612202657_ChangedComputer")]
+    partial class ChangedComputer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,38 +127,12 @@ namespace StaffingSolution.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Selected")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("ContactMessages");
-                });
-
-            modelBuilder.Entity("StaffingSolution.Models.InterviewRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InterviewRequests");
                 });
 
             modelBuilder.Entity("StaffingSolution.Models.JobApplication", b =>
@@ -172,13 +146,47 @@ namespace StaffingSolution.Migrations
                     b.Property<DateTime>("AppliedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("CanWorkEvening")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanWorkFullTime")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanWorkMorning")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanWorkNight")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Company")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("CvFile")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("ExperienceYears")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasDrivingLicense")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasPreviousExperience")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsStudying")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PersonalStatement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SwedishSkills")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
